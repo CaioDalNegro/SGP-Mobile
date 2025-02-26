@@ -8,6 +8,11 @@ import Ionicons from "react-native-vector-icons/Ionicons";
 const places = [
   { id: "1", name: "Domo", location: "Laguna-SC", image: "./assets/image/domo_1.jpeg" },
   { id: "2", name: "Charrua (Bus)", location: "Laguna-SC", image: "./assets/image/bus_1.jpeg" },
+
+  { id: "3", name: "Suíte com cozinha", location: "Laguna-SC", image: "./assets/image/casa_praia.jpeg" },
+  { id: "4", name: "Chalé família", location: "Laguna-SC", image: "./assets/image/cabana.jpeg" },
+  { id: "5", name: "Cabana", location: "Laguna-SC", image: "./assets/image/suite.jpeg" },
+  { id: "6", name: "Estacionamento para overlanders", location: "Laguna-SC", image: "./assets/image/chale.jpeg" },
 ];
 
 // Componente principal da tela inicial
@@ -41,9 +46,9 @@ export default function HomeScreen() {
       {/* Seção de hospedagens */}
       <Text style={styles.sectionTitle}>Nossas hospedagens</Text>
       <FlatList
-        horizontal
         data={places}
         keyExtractor={(item) => item.id}
+        numColumns={2} // Define 2 colunas por linha
         renderItem={({ item }) => (
           <View style={styles.card}>
             <Image source={{ uri: item.image }} style={styles.image} />
@@ -112,7 +117,7 @@ const styles = StyleSheet.create({
   },
   
   // Seção de hospedagens
-  sectionTitle: {
+  sectionTitle: { 
     fontSize: 18, 
     fontWeight: "bold", 
     //marginTop: 20,
@@ -122,6 +127,7 @@ const styles = StyleSheet.create({
   card: {
     margin: 8,
     marginLeft:40,
+    width: 128,
   },
   image: {
     width: 128, 
