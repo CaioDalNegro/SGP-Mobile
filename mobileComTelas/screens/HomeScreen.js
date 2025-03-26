@@ -8,7 +8,9 @@ import styles from "../styles"; // Ajuste o caminho se necessário
 // Dados de exemplo de locais de hospedagem e tours virtuais
 const places = [
   { id: "1", name: "Domo", location: "Laguna-SC", image: require("../assets/image/domo_1.jpeg") },
-  { id: "2", name: "Charrua (Bus)", location: "Laguna-SC", image: require("../assets/image/bus_1.jpeg") }
+  { id: "2", name: "Charrua (Bus)", location: "Laguna-SC", image: require("../assets/image/bus_1.jpeg") },
+
+  { id: "3", name: "Suíte com cozinha", location: "Laguna-SC", image: require("../assets/image/Suite.jpg") }
 ];
 
 export default function HomeScreen() {
@@ -65,6 +67,7 @@ export default function HomeScreen() {
             <View style={styles.card}>
               <View style={styles.imageContainer}>
                 <Image source={item.image} style={styles.image} />
+                <Ionicons name="heart" size={24} style={styles.icon} />
               </View>
               <Text style={styles.cardTitle}>{item.name}</Text>
               <Text style={styles.cardSubtitle}>{item.location}</Text>

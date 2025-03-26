@@ -93,6 +93,14 @@ const styles = StyleSheet.create({
   },
   scrollContainer: {
     flex: 1,  // Ocupa o restante do espaço disponível
+  },
+  icon: {
+
+    position: "absolute",
+    top: 10, // Distância do topo
+    right: 10, // Distância da direita
+    padding: 8,
+    borderRadius: 20,
   }
 });
 
