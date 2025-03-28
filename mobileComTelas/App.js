@@ -6,7 +6,6 @@ import LoginScreen from './screens/LoginScreen'; // A tela de login
 
 const Tab = createBottomTabNavigator();
 
-export default function App() {
   return (
     <NavigationContainer>
       <Tab.Navigator>
