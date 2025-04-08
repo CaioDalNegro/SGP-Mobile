@@ -1,19 +1,17 @@
 import React, { useState } from "react";
-import { 
-  View, Text, TextInput, FlatList, Image, TouchableOpacity, ScrollView 
+import {
+  View, Text, TextInput, FlatList, Image, TouchableOpacity, ScrollView
 } from "react-native";
 import Ionicons from "react-native-vector-icons/Ionicons";
-import styles from "../styles"; // Ajuste o caminho se necessário
+import styles from "../estilos/styles"; // Ajuste o caminho se necessário
 
-// Dados de exemplo de locais de hospedagem e tours virtuais
 const places = [
   { id: "1", name: "Domo", location: "Laguna-SC", image: require("../assets/image/domo_1.jpeg") },
   { id: "2", name: "Charrua (Bus)", location: "Laguna-SC", image: require("../assets/image/bus_1.jpeg") },
-
   { id: "3", name: "Suíte com cozinha", location: "Laguna-SC", image: require("../assets/image/Suite.jpg") }
 ];
 
-export default function HomeScreen() {
+export default function HomeScreen({ navigation }) {
   const [footerVisible, setFooterVisible] = useState(false);
 
   const handleScroll = (event) => {
@@ -21,12 +19,17 @@ export default function HomeScreen() {
     const contentOffsetY = event.nativeEvent.contentOffset.y;
     const layoutHeight = event.nativeEvent.layoutMeasurement.height;
 
-    // Exibe o rodapé apenas ao final da rolagem
     setFooterVisible(contentHeight - contentOffsetY <= layoutHeight);
   };
 
   return (
     <View style={styles.container}>
+      {/* Botão de voltar */}
+      <TouchableOpacity onPress={() => navigation.goBack()} style={styles.voltarBotao}>
+        <Ionicons name="arrow-back" size={24} color="#333" />
+        <Text style={styles.voltarTexto}>Voltar</Text>
+      </TouchableOpacity>
+
       {/* Cabeçalho */}
       <View style={styles.header}>
         <View style={styles.headerTop}>
@@ -39,10 +42,10 @@ export default function HomeScreen() {
         {/* Caixa de pesquisa */}
         <View style={styles.searchContainer}>
           <View style={styles.searchBox}>
-            <TextInput 
-              placeholder="Pesquisar" 
-              placeholderTextColor="white" 
-              style={styles.searchInput} 
+            <TextInput
+              placeholder="Pesquisar"
+              placeholderTextColor="white"
+              style={styles.searchInput}
             />
           </View>
           <TouchableOpacity style={styles.searchButton}>
@@ -54,10 +57,10 @@ export default function HomeScreen() {
       {/* Seção de hospedagens */}
       <Text style={styles.sectionTitle}>Nossas hospedagens</Text>
 
-      <ScrollView 
+      <ScrollView
         style={styles.scrollContainer}
         onScroll={handleScroll}
-        scrollEventThrottle={16}  // Para melhorar a performance do onScroll
+        scrollEventThrottle={16}
       >
         <FlatList
           data={places}

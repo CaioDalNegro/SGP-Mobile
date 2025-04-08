@@ -1,70 +1,85 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, ScrollView, KeyboardAvoidingView, Platform, SafeAreaView } from 'react-native';
+import {
+  View, Text, TextInput, TouchableOpacity,
+  ScrollView, KeyboardAvoidingView, Platform,
+  SafeAreaView, Alert
+} from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import styles from '../styles';
+import styles from '../estilos/styles';
 
-export default function LoginScreen() {
+export default function LoginScreen({ navigation }) {
+  const [email, setEmail] = useState('');
+  const [senha, setSenha] = useState('');
   const [passwordVisible, setPasswordVisible] = useState(false);
+
+  const adminEmail = 'admin@ypua.com';
+  const adminSenha = '123456';
+
+  const handleLogin = () => {
+    if (email === adminEmail && senha === adminSenha) {
+      navigation.navigate('Main');
+    } else {
+      Alert.alert('Erro de login', 'E-mail ou senha incorretos!');
+    }
+  };
 
   return (
     <KeyboardAvoidingView
       style={styles.container}
-      behavior={Platform.OS === 'ios' ? 'padding' : null}
+      behavior={Platform.OS === 'ios' ? 'padding' : undefined}
     >
-      <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
-        {/* Cabeçalho com texto de boas-vindas */}
-        <View style={styles.header}>
-          <Text style={styles.headerText}>
-            Seu refúgio perfeito, a apenas um login de distância!
-          </Text>
-        </View>
+      <ScrollView contentContainerStyle={styles.loginScrollContainer}>
+        <View style={styles.loginBox}>
+          <Text style={styles.loginTitle}>Bem-vindo de volta!</Text>
+          <Text style={styles.loginSubtitle}>Faça login para continuar</Text>
 
-        {/* Texto de boas-vindas */}
-        <Text style={styles.welcomeText}>Bem-vindo de volta!</Text>
-
-        {/* Caixa de Login - E-mail */}
-        <View style={styles.inputContainer}>
-          <Ionicons name="mail-outline" size={20} color="#888" style={styles.icon} />
-          <TextInput 
-            style={styles.input}
-            placeholder="Digite seu e-mail"
-            placeholderTextColor="#888"
-          />
-        </View>
-
-        {/* Caixa de Login - Senha */}
-        <View style={styles.inputContainer}>
-          <Ionicons name="lock-closed-outline" size={20} color="#888" style={styles.icon} />
-          <TextInput 
-            style={styles.input}
-            placeholder="Digite sua senha"
-            placeholderTextColor="#888"
-            secureTextEntry={!passwordVisible}
-          />
-          <TouchableOpacity 
-            style={styles.eyeIcon}
-            onPress={() => setPasswordVisible(!passwordVisible)}
-          >
-            <Ionicons 
-              name={passwordVisible ? "eye-off-outline" : "eye-outline"} 
-              size={20} 
-              color="#888"
+          {/* Campo de e-mail */}
+          <View style={styles.inputContainer}>
+            <Ionicons name="mail-outline" size={20} color="#888" style={styles.icon} />
+            <TextInput
+              style={styles.input}
+              placeholder="Digite seu e-mail"
+              placeholderTextColor="#999"
+              keyboardType="email-address"
+              value={email}
+              onChangeText={setEmail}
             />
+          </View>
+
+          {/* Campo de senha */}
+          <View style={styles.inputContainer}>
+            <Ionicons name="lock-closed-outline" size={20} color="#888" style={styles.icon} />
+            <TextInput
+              style={styles.input}
+              placeholder="Digite sua senha"
+              placeholderTextColor="#999"
+              secureTextEntry={!passwordVisible}
+              value={senha}
+              onChangeText={setSenha}
+            />
+            <TouchableOpacity
+              style={styles.eyeIcon}
+              onPress={() => setPasswordVisible(!passwordVisible)}
+            >
+              <Ionicons
+                name={passwordVisible ? "eye-off-outline" : "eye-outline"}
+                size={20}
+                color="#888"
+              />
+            </TouchableOpacity>
+          </View>
+
+          {/* Botão de login */}
+          <TouchableOpacity style={styles.button} onPress={handleLogin}>
+            <Text style={styles.buttonText}>Entrar</Text>
           </TouchableOpacity>
         </View>
 
-        {/* Botão de Login */}
-        <TouchableOpacity style={styles.button}>
-          <Text style={styles.buttonText}>Entrar</Text>
-        </TouchableOpacity>
+        {/* Frase de rodapé */}
+        <SafeAreaView style={styles.bottomTextContainer}>
+          <Text style={styles.bottomText}>Reconecte-se com a Natureza</Text>
+        </SafeAreaView>
       </ScrollView>
-
-      {/* Texto de reconectar com a natureza na parte inferior */}
-      <SafeAreaView style={styles.bottomTextContainer}>
-        <Text style={styles.bottomText}>
-          Reconecte-se com a Natureza
-        </Text>
-      </SafeAreaView>
     </KeyboardAvoidingView>
   );
 }

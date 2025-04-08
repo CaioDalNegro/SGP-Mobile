@@ -101,7 +101,107 @@ const styles = StyleSheet.create({
     right: 10, // Distância da direita
     padding: 8,
     borderRadius: 20,
-  }
+  },
+  voltarBotao: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    padding: 10,
+    marginTop: 20,
+    marginLeft: 10,
+    backgroundColor: '#eee',
+    borderRadius: 8,
+    width: 100,
+  },
+  
+  voltarTexto: {
+    fontSize: 16,
+    marginLeft: 5,
+    color: '#333'
+  },
+  loginScrollContainer: {
+    flexGrow: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 20,
+    backgroundColor: '#f0f4f8',
+  },
+  
+  loginBox: {
+    width: '100%',
+    maxWidth: 400,
+    backgroundColor: '#fff',
+    padding: 25,
+    borderRadius: 15,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 5,
+    elevation: 5,
+    marginBottom: 30,
+  },
+  
+  loginTitle: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    marginBottom: 10,
+    textAlign: 'center',
+    color: '#333',
+  },
+  
+  loginSubtitle: {
+    fontSize: 16,
+    color: '#666',
+    marginBottom: 20,
+    textAlign: 'center',
+  },
+  
+  inputContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#f7f7f7',
+    borderRadius: 10,
+    paddingHorizontal: 10,
+    paddingVertical: 12,
+    marginBottom: 15,
+  },
+  
+  input: {
+    flex: 1,
+    marginLeft: 10,
+    color: '#333',
+  },
+  
+  icon: {
+    marginRight: 5,
+  },
+  
+  eyeIcon: {
+    padding: 4,
+  },
+  
+  button: {
+    backgroundColor: '#007AFF',
+    paddingVertical: 14,
+    borderRadius: 10,
+    alignItems: 'center',
+    marginTop: 10,
+  },
+  
+  buttonText: {
+    color: '#fff',
+    fontSize: 16,
+    fontWeight: '600',
+  },
+  
+  bottomTextContainer: {
+    alignItems: 'center',
+    marginTop: 20,
+  },
+  
+  bottomText: {
+    fontSize: 14,
+    color: '#999',
+  },  
 });
 
 export default styles;
