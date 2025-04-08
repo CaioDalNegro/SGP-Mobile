@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, ScrollView, KeyboardAvoidingView, Platform, SafeAreaView } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import styles from '../stylesLogin';
+import styles from '../styles';
 
 export default function LoginScreen() {
   const [passwordVisible, setPasswordVisible] = useState(false);
