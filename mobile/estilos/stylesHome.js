@@ -12,6 +12,7 @@ const stylesHome = StyleSheet.create({
     padding: 40,
     borderBottomRightRadius: 45,
     width: "100%",
+    height:"30%"
   },
   headerTop: {
     flexDirection: "row",
@@ -20,7 +21,6 @@ const stylesHome = StyleSheet.create({
     paddingHorizontal: 16,
     paddingTop: 10,
     paddingBottom: 10,
-    backgroundColor: "#388E3C",
     width: "100%",
   },
   headerText: {
@@ -64,7 +64,6 @@ const stylesHome = StyleSheet.create({
     fontSize: 18,
     fontWeight: "bold",
     padding: 10,
-    textAlign: "center",
   },
   card: {
     margin: 8,
@@ -80,12 +79,10 @@ const stylesHome = StyleSheet.create({
   cardTitle: {
     fontSize: 14,
     fontWeight: "bold",
-    textAlign: "center",
   },
   cardSubtitle: {
     fontSize: 12,
     color: "#666",
-    textAlign: "center",
   },
   footer: {
     backgroundColor: "#4CA69A",

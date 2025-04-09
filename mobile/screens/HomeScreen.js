@@ -1,3 +1,4 @@
+// screens/HomeScreen.js
 import React, { useState } from "react";
 import {
   View,
@@ -9,7 +10,7 @@ import {
   SafeAreaView,
 } from "react-native";
 import Ionicons from "react-native-vector-icons/Ionicons";
-import styles from "../estilos/stylesHome"; // Certifique-se que está correto
+import styles from "../estilos/stylesHome";
 
 const places = [
   {
@@ -45,7 +46,6 @@ export default function HomeScreen({ navigation }) {
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: "#fff" }}>
-      {/* Cabeçalho com botão de voltar e notificação */}
       <View style={styles.header}>
         <View style={styles.headerTop}>
           <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backButton}>
@@ -53,8 +53,7 @@ export default function HomeScreen({ navigation }) {
           </TouchableOpacity>
 
           <Text style={styles.headerText}>
-            Seu refúgio perfeito a{" "}
-            <Text style={styles.boldText}>um clique</Text> de distância!
+            Seu refúgio perfeito a <Text style={styles.boldText}>um clique</Text> de distância!
           </Text>
 
           <TouchableOpacity>
@@ -62,7 +61,6 @@ export default function HomeScreen({ navigation }) {
           </TouchableOpacity>
         </View>
 
-        {/* Caixa de pesquisa */}
         <View style={styles.searchContainer}>
           <View style={styles.searchBox}>
             <TextInput
@@ -77,7 +75,6 @@ export default function HomeScreen({ navigation }) {
         </View>
       </View>
 
-      {/* Lista de hospedagens */}
       <FlatList
         style={{ flex: 1 }}
         data={places}
@@ -98,14 +95,17 @@ export default function HomeScreen({ navigation }) {
           )
         }
         renderItem={({ item }) => (
-          <View style={styles.card}>
+          <TouchableOpacity
+            style={styles.card}
+            onPress={() => navigation.navigate("Description", { place: item })}
+          >
             <View style={styles.imageContainer}>
               <Image source={item.image} style={styles.image} />
               <Ionicons name="heart" size={24} style={styles.icon} />
             </View>
             <Text style={styles.cardTitle}>{item.name}</Text>
             <Text style={styles.cardSubtitle}>{item.location}</Text>
-          </View>
+          </TouchableOpacity>
         )}
       />
     </SafeAreaView>
