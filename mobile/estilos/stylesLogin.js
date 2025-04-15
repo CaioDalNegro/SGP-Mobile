@@ -3,7 +3,7 @@ import { StyleSheet } from "react-native";
 const stylesLogin = StyleSheet.create({
   loginContainer: {
     flex: 1,
-    backgroundColor: "#f0f4f8",
+    backgroundColor: "#EDE6DA",
     justifyContent: "center",
     alignItems: "center",
     paddingHorizontal: 20,
@@ -12,14 +12,15 @@ const stylesLogin = StyleSheet.create({
   loginBox: {
     width: "100%",
     maxWidth: 400,
-    backgroundColor: "#fff",
+    backgroundColor: "#EDE6DA",
     padding: 25,
     borderRadius: 15,
-    shadowColor: "#000",
+    shadowColor: "#000000",
     shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
+    shadowOpacity: 1.1,
     shadowRadius: 5,
     elevation: 5,
+    opacity: 100,
     alignItems: "center",
   },
   loginTitle: {
@@ -57,7 +58,7 @@ const stylesLogin = StyleSheet.create({
     padding: 4,
   },
   button: {
-    backgroundColor: "#007AFF",
+    backgroundColor: "#000000",
     paddingVertical: 14,
     borderRadius: 10,
     alignItems: "center",
@@ -75,7 +76,7 @@ const stylesLogin = StyleSheet.create({
   },
   bottomText: {
     fontSize: 14,
-    color: "#999",
+    color: "#20b2aa ",
     textAlign: "center",
   },
 });

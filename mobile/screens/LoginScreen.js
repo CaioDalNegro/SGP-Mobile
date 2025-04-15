@@ -25,7 +25,7 @@ export default function LoginScreen({ navigation }) {
   return (
     <View style={styles.loginContainer}>
       <View style={styles.loginBox}>
-        <Text style={styles.loginTitle}>Bem-vindo de volta!</Text>
+        <Text style={styles.loginTitle}>Conecte-se com a Natureza</Text>
         <Text style={styles.loginSubtitle}>Faça login para continuar</Text>
 
         {/* Campo de e-mail */}
