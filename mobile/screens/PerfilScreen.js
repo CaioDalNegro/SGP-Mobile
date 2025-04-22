@@ -6,7 +6,7 @@ export default function PerfilScreen({ navigation }) {
   const user = {
     name: "João da Silva",
     email: "joao@email.com",
-    photo: "https://i.pravatar.cc/300", // imagem de exemplo
+    photo: "", // imagem de exemplo
   };
 
   return (
