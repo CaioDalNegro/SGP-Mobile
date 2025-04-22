@@ -14,13 +14,13 @@ const favoritePlaces = [
     id: "1",
     name: "Domo",
     location: "Laguna-SC",
-    image: require("../assets/image/domo_1.jpeg"),
+   /*image: require("/"),*/
   },
   {
     id: "2",
     name: "Charrua (Bus)",
     location: "Laguna-SC",
-    image: require("../assets/image/bus_1.jpeg"),
+     /*image: require("/"),*/
   },
 ];
 
