@@ -10,9 +10,9 @@ const Tab = createBottomTabNavigator();
 export default function MainTabs() {
   return (
     <Tab.Navigator screenOptions={{ headerShown: false }}>
-      <Tab.Screen name="Home" component={HomeScreen} />
-      {<Tab.Screen name="FavoriteScreen" component={FavoriteScreen}/>}
-      {<Tab.Screen name="PerfilScreen" component={PerfilScreen}/>}
+      <Tab.Screen name="Início" component={HomeScreen} />
+      {<Tab.Screen name="Favoritos" component={FavoriteScreen}/>}
+      {<Tab.Screen name="Perfil" component={PerfilScreen}/>}
     </Tab.Navigator>
   );
 }
