@@ -1,81 +1,99 @@
 import React from "react";
-import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  Image,
+  TouchableOpacity,
+  Dimensions,
+} from "react-native";
+import { LinearGradient } from "expo-linear-gradient";
 import Ionicons from "react-native-vector-icons/Ionicons";
+
+const { width } = Dimensions.get("window");
 
 export default function PerfilScreen({ navigation }) {
   const user = {
-    name: "João da Silva",
-    email: "joao@email.com",
-    photo: "", // imagem de exemplo
+    name: "Caio Dal Negro",
+    photo: require("../assets/image/profile.png"), // coloque sua imagem aqui
   };
 
   return (
     <View style={styles.container}>
-      {/* Foto de perfil */}
-      <Image source={{ uri: user.photo }} style={styles.avatar} />
-
-      {/* Nome e Email */}
-      <Text style={styles.name}>{user.name}</Text>
-      <Text style={styles.email}>{user.email}</Text>
-
-      {/* Botões */}
-      <TouchableOpacity style={styles.button}>
-        <Ionicons name="create-outline" size={20} color="#fff" />
-        <Text style={styles.buttonText}>Editar Perfil</Text>
-      </TouchableOpacity>
-
-      <TouchableOpacity
-        style={[styles.button, styles.logoutButton]}
-        onPress={() => navigation.navigate("Login")}
+      <LinearGradient
+        colors={["#3BA7C9", "#58B4B0"]}
+        style={styles.header}
       >
-        <Ionicons name="log-out-outline" size={20} color="#fff" />
-        <Text style={styles.buttonText}>Sair</Text>
-      </TouchableOpacity>
+        <View style={styles.curvedShape} />
+        <Image source={user.photo} style={styles.avatar} />
+        <Text style={styles.name}>{user.name}</Text>
+      </LinearGradient>
+
+      <View style={styles.body}>
+        <TouchableOpacity style={styles.optionButton}>
+          <Ionicons name="person-circle-outline" size={22} color="#3BA7C9" />
+          <Text style={styles.optionText}>Editar Perfil</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity style={styles.optionButton}>
+          <Ionicons name="settings-outline" size={22} color="#3BA7C9" />
+          <Text style={styles.optionText}>Configurações</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          style={[styles.optionButton, styles.logout]}
+          onPress={() => navigation.navigate("Login")}
+        >
+          <Ionicons name="log-out-outline" size={22} color="#e74c3c" />
+          <Text style={[styles.optionText, { color: "#e74c3c" }]}>Sair</Text>
+        </TouchableOpacity>
+      </View>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#f2f2f2",
+  container: { flex: 1, backgroundColor: "#fff" },
+  header: {
+    height: 270,
     alignItems: "center",
     justifyContent: "center",
-    padding: 20,
+    position: "relative",
   },
   avatar: {
-    width: 120,
-    height: 120,
-    borderRadius: 60,
-    marginBottom: 20,
-    borderWidth: 2,
-    borderColor: "#4c9ef1",
+    width: 110,
+    height: 110,
+    borderRadius: 55,
+    borderWidth: 4,
+    borderColor: "#fff",
+    marginBottom: 8,
+    backgroundColor: "#eee",
+    zIndex: 1,
   },
   name: {
-    fontSize: 24,
+    fontSize: 22,
     fontWeight: "bold",
-    marginBottom: 5,
+    color: "#fff",
+    zIndex: 1,
   },
-  email: {
-    fontSize: 16,
-    color: "#666",
-    marginBottom: 30,
+  body: {
+    marginTop: 50,
+    paddingHorizontal: 30,
   },
-  button: {
+  optionButton: {
     flexDirection: "row",
     alignItems: "center",
-    backgroundColor: "#4c9ef1",
-    paddingVertical: 12,
-    paddingHorizontal: 20,
-    borderRadius: 30,
-    marginVertical: 10,
+    paddingVertical: 14,
+    borderBottomWidth: 1,
+    borderBottomColor: "#eee",
   },
-  logoutButton: {
-    backgroundColor: "#e74c3c",
-  },
-  buttonText: {
-    color: "#fff",
-    marginLeft: 10,
+  optionText: {
     fontSize: 16,
+    marginLeft: 10,
+    color: "#333",
+  },
+  logout: {
+    marginTop: 20,
+    borderBottomWidth: 0,
   },
 });

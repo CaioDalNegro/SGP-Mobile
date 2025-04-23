@@ -1,17 +1,30 @@
-import React, { useEffect } from 'react';
-import { View, Image, StyleSheet } from 'react-native';
+import React, { useEffect, useRef } from 'react';
+import { View, Animated, StyleSheet } from 'react-native';
 import Logo from '../assets/image/Logo.png';
 
 const SplashScreen = ({ navigation }) => {
+  const scaleAnim = useRef(new Animated.Value(0.5)).current; // Inicia menor
+
   useEffect(() => {
-    setTimeout(() => {
-      navigation.replace('Login');  // Navega para a tela de Login
-    }, 3000);  // tempo em milissegundos
+    Animated.spring(scaleAnim, {
+      toValue: 1,
+      useNativeDriver: true,
+      friction: 4,
+    }).start();
+
+    const timeout = setTimeout(() => {
+      navigation.replace('Login');
+    }, 3000);
+
+    return () => clearTimeout(timeout);
   }, []);
 
   return (
     <View style={styles.container}>
-      <Image source={Logo} style={styles.logo} />
+      <Animated.Image
+        source={Logo}
+        style={[styles.logo, { transform: [{ scale: scaleAnim }] }]}
+      />
     </View>
   );
 };
