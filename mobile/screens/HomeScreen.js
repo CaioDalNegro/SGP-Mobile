@@ -11,25 +11,27 @@ import {
 } from "react-native";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import styles from "../estilos/stylesHome";
+import { useFavorites } from "../context/FavoritesContext";
 
 const places = [
   {
     id: "1",
     name: "Domo",
     location: "Laguna-SC",
-    /*image: require("/"),*/
+    // se tiver imagem local, descomente:
+    // image: require("../assets/image/domo.jpg"),
   },
   {
     id: "2",
     name: "Charrua (Bus)",
     location: "Laguna-SC",
-    /*image: require("/"),*/
+    // image: require("../assets/image/bus.jpg"),
   },
   {
     id: "3",
     name: "Suíte com cozinha",
     location: "Laguna-SC",
-    /*image: require("/"),*/
+    // image: require("../assets/image/suite.jpg"),
   },
 ];
 
@@ -37,39 +39,47 @@ export default function HomeScreen({ navigation }) {
   const [footerVisible, setFooterVisible] = useState(false);
   const [searchText, setSearchText] = useState("");
   const [filteredPlaces, setFilteredPlaces] = useState(places);
+  const { favorites, addFavorite, removeFavorite, isFavorite } = useFavorites();
 
-  const handleScroll = (event) => {
-    const contentHeight = event.nativeEvent.contentSize.height;
-    const contentOffsetY = event.nativeEvent.contentOffset.y;
-    const layoutHeight = event.nativeEvent.layoutMeasurement.height;
-
-    setFooterVisible(contentHeight - contentOffsetY <= layoutHeight + 20);
+  const handleScroll = (e) => {
+    const { contentSize, contentOffset, layoutMeasurement } = e.nativeEvent;
+    setFooterVisible(
+      contentSize.height - contentOffset.y <= layoutMeasurement.height + 20
+    );
   };
 
   const handleSearch = () => {
-    const filtered = places.filter((place) =>
-      place.name.toLowerCase().includes(searchText.toLowerCase())
+    const filtered = places.filter((p) =>
+      p.name.toLowerCase().includes(searchText.toLowerCase())
     );
     setFilteredPlaces(filtered);
   };
 
+  const handleToggleFavorite = (item) => {
+    isFavorite(item.id) ? removeFavorite(item.id) : addFavorite(item);
+  };
+
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: "#fff" }}>
+      {/* Header */}
       <View style={styles.header}>
         <View style={styles.headerTop}>
-          <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backButton}>
+          <TouchableOpacity
+            onPress={() => navigation.goBack()}
+            style={styles.backButton}
+          >
             <Ionicons name="arrow-back" size={24} color="white" />
           </TouchableOpacity>
-
           <Text style={styles.headerText}>
-            Seu refúgio perfeito a <Text style={styles.boldText}>um clique</Text> de distância!
+            Seu refúgio perfeito a{" "}
+            <Text style={styles.boldText}>um clique</Text> de distância!
           </Text>
-
           <TouchableOpacity>
             <Ionicons name="notifications-outline" size={24} color="white" />
           </TouchableOpacity>
         </View>
 
+        {/* Search Bar */}
         <View style={styles.searchContainer}>
           <View style={styles.searchBox}>
             <TextInput
@@ -86,11 +96,11 @@ export default function HomeScreen({ navigation }) {
         </View>
       </View>
 
+      {/* List of Places */}
       <FlatList
         style={{ flex: 1 }}
         data={filteredPlaces}
         keyExtractor={(item) => item.id}
-        numColumns={1}
         onScroll={handleScroll}
         scrollEventThrottle={16}
         ListHeaderComponent={() => (
@@ -105,19 +115,44 @@ export default function HomeScreen({ navigation }) {
             </View>
           )
         }
-        renderItem={({ item }) => (
-          <TouchableOpacity
-            style={styles.card}
-            onPress={() => navigation.navigate("Description", { place: item })}
-          >
-            <View style={styles.imageContainer}>
-              <Image source={item.image} style={styles.image} />
-              <Ionicons name="heart" size={24} style={styles.icon} />
-            </View>
-            <Text style={styles.cardTitle}>{item.name}</Text>
-            <Text style={styles.cardSubtitle}>{item.location}</Text>
-          </TouchableOpacity>
-        )}
+        renderItem={({ item }) => {
+          const favorited = isFavorite(item.id);
+          return (
+            <TouchableOpacity
+              style={styles.card}
+              onPress={() =>
+                navigation.navigate("Description", { place: item })
+              }
+            >
+              <View style={styles.imageContainer}>
+                {item.image ? (
+                  <Image source={item.image} style={styles.image} />
+                ) : (
+                  <View
+                    style={[
+                      styles.image,
+                      { backgroundColor: "#e0e0e0", justifyContent: "center", alignItems: "center" },
+                    ]}
+                  >
+                    <Ionicons name="image-outline" size={40} color="#aaa" />
+                  </View>
+                )}
+                <TouchableOpacity
+                  style={styles.favoriteIcon}
+                  onPress={() => handleToggleFavorite(item)}
+                >
+                  <Ionicons
+                    name={favorited ? "heart" : "heart-outline"}
+                    size={28}
+                    color={favorited ? "red" : "white"}
+                  />
+                </TouchableOpacity>
+              </View>
+              <Text style={styles.cardTitle}>{item.name}</Text>
+              <Text style={styles.cardSubtitle}>{item.location}</Text>
+            </TouchableOpacity>
+          );
+        }}
       />
     </SafeAreaView>
   );

@@ -70,11 +70,13 @@ const stylesHome = StyleSheet.create({
     width: 300,
     alignSelf: "center",
   },
+  imageContainer: {
+    position: "relative",   // importante para posicionamento absoluto do ícone
+  },
   image: {
     width: "100%",
     height: 200,
-    borderRadius: 8,
-    backgroundColor: "gray",
+    borderRadius: 12,
   },
   cardTitle: {
     fontSize: 14,
@@ -96,11 +98,13 @@ const stylesHome = StyleSheet.create({
     fontSize: 14,
     textAlign: "center",
   },
-  icon: {
+  favoriteIcon: {
     position: "absolute",
     top: 10,
     right: 10,
-    padding: 8,
+    zIndex: 2,
+    padding: 6,
+    backgroundColor: "rgba(0,0,0,0.3)",
     borderRadius: 20,
   },
 });

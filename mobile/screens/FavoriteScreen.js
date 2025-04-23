@@ -1,3 +1,4 @@
+// screens/FavoriteScreen.js
 import React from "react";
 import {
   View,
@@ -8,33 +9,27 @@ import {
   TouchableOpacity,
 } from "react-native";
 import Ionicons from "react-native-vector-icons/Ionicons";
-
-const favoritePlaces = [
-  {
-    id: "1",
-    name: "Domo",
-    location: "Laguna-SC",
-   /*image: require("/"),*/
-  },
-  {
-    id: "2",
-    name: "Charrua (Bus)",
-    location: "Laguna-SC",
-     /*image: require("/"),*/
-  },
-];
+import { useFavorites } from "../context/FavoritesContext";  // ✅ importe o hook
 
 export default function FavoriteScreen({ navigation }) {
+  const { favorites } = useFavorites();  // ✅ use o hook para obter o array
+
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Meus Favoritos</Text>
 
       <FlatList
-        data={favoritePlaces}
+        data={favorites}
         keyExtractor={(item) => item.id}
+        ListEmptyComponent={
+          <Text style={styles.emptyText}>Nenhum favorito ainda!</Text>
+        }
         renderItem={({ item }) => (
-          <TouchableOpacity style={styles.card}>
-            <Image source={item.image} style={styles.image} />
+          <TouchableOpacity
+            style={styles.card}
+            onPress={() => navigation.navigate("Description", { place: item })}
+          >
+            {item.image && <Image source={item.image} style={styles.image} />}
             <View style={styles.info}>
               <Text style={styles.name}>{item.name}</Text>
               <Text style={styles.location}>{item.location}</Text>
@@ -42,9 +37,6 @@ export default function FavoriteScreen({ navigation }) {
             <Ionicons name="heart" size={24} color="#e74c3c" />
           </TouchableOpacity>
         )}
-        ListEmptyComponent={
-          <Text style={styles.emptyText}>Nenhum favorito ainda!</Text>
-        }
       />
     </View>
   );
