@@ -1,0 +1,220 @@
+[
+    {
+        "id": "9e3d3c272cfa7f31",
+        "type": "tab",
+        "label": "API Reservas",
+        "disabled": false,
+        "info": ""
+    },
+    {
+        "id": "9f27b07f71a99b8f",
+        "type": "http in",
+        "z": "9e3d3c272cfa7f31",
+        "name": "GET /reservas",
+        "url": "/reservas",
+        "method": "get",
+        "upload": false,
+        "swaggerDoc": "",
+        "x": 120,
+        "y": 80,
+        "wires": [
+            [
+                "ae2e47e4d6b99f3e"
+            ]
+        ]
+    },
+    {
+        "id": "ae2e47e4d6b99f3e",
+        "type": "function",
+        "z": "9e3d3c272cfa7f31",
+        "name": "Buscar Reservas",
+        "func": "msg.payload = global.get(\"reservas\") || [];\nreturn msg;",
+        "outputs": 1,
+        "timeout": "",
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 300,
+        "y": 80,
+        "wires": [
+            [
+                "d9c67d1288bfc41f"
+            ]
+        ]
+    },
+    {
+        "id": "d9c67d1288bfc41f",
+        "type": "http response",
+        "z": "9e3d3c272cfa7f31",
+        "name": "",
+        "statusCode": "",
+        "headers": {},
+        "x": 500,
+        "y": 80,
+        "wires": []
+    },
+    {
+        "id": "8ed8e1fef46bd158",
+        "type": "http in",
+        "z": "9e3d3c272cfa7f31",
+        "name": "POST /reservas",
+        "url": "/reservas",
+        "method": "post",
+        "upload": false,
+        "swaggerDoc": "",
+        "x": 130,
+        "y": 160,
+        "wires": [
+            [
+                "e7e60b2c5cbf0896"
+            ]
+        ]
+    },
+    {
+        "id": "e7e60b2c5cbf0896",
+        "type": "json",
+        "z": "9e3d3c272cfa7f31",
+        "name": "Converter JSON",
+        "property": "payload",
+        "action": "obj",
+        "pretty": false,
+        "x": 310,
+        "y": 160,
+        "wires": [
+            [
+                "fd09bb75aa408369"
+            ]
+        ]
+    },
+    {
+        "id": "fd09bb75aa408369",
+        "type": "function",
+        "z": "9e3d3c272cfa7f31",
+        "name": "Salvar nova reserva",
+        "func": "node.warn(\"📦 Payload recebido:\");\nnode.warn(msg.payload);  // Isso vai mostrar o conteúdo completo no debug\n\nmsg.topic = \"INSERT INTO reservas (nome, email, data_checkin, data_checkout, quarto) VALUES (?, ?, ?, ?, ?)\";\nmsg.payload = [\n    msg.payload.nome,\n    msg.payload.email,\n    msg.payload.data_checkin,\n    msg.payload.data_checkout,\n    msg.payload.quarto\n];\nreturn msg;\n",
+        "outputs": 1,
+        "timeout": "",
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 520,
+        "y": 160,
+        "wires": [
+            [
+                "209e796b65201101"
+            ]
+        ]
+    },
+    {
+        "id": "209e796b65201101",
+        "type": "mysql",
+        "z": "9e3d3c272cfa7f31",
+        "mydb": "2aee678e613109ec",
+        "name": "pousada",
+        "x": 760,
+        "y": 280,
+        "wires": [
+            [
+                "d8d853a590b61445",
+                "47e64d7d7a8ee2cf"
+            ]
+        ]
+    },
+    {
+        "id": "d8d853a590b61445",
+        "type": "debug",
+        "z": "9e3d3c272cfa7f31",
+        "name": "debug 2",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 940,
+        "y": 280,
+        "wires": []
+    },
+    {
+        "id": "61c29999f3d921de",
+        "type": "function",
+        "z": "9e3d3c272cfa7f31",
+        "name": "function 3",
+        "func": "const r = msg.payload;\nmsg.topic = `INSERT INTO reservas\n  (nome, email, data_checkin, data_checkout, quarto)\n  VALUES ('${r.nome}', '${r.email}', '${r.data_checkin}', '${r.data_checkout}', '${r.quarto}')`;\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 420,
+        "y": 280,
+        "wires": [
+            [
+                "209e796b65201101"
+            ]
+        ]
+    },
+    {
+        "id": "5295a139f10e2cfe",
+        "type": "http in",
+        "z": "9e3d3c272cfa7f31",
+        "name": "Adicionar_Banco",
+        "url": "http://10.110.12.57:1880",
+        "method": "post",
+        "upload": false,
+        "swaggerDoc": "",
+        "x": 120,
+        "y": 280,
+        "wires": [
+            [
+                "61c29999f3d921de",
+                "8945917e7c81102c"
+            ]
+        ]
+    },
+    {
+        "id": "47e64d7d7a8ee2cf",
+        "type": "http response",
+        "z": "9e3d3c272cfa7f31",
+        "name": "retorno",
+        "statusCode": "",
+        "headers": {},
+        "x": 960,
+        "y": 440,
+        "wires": []
+    },
+    {
+        "id": "8945917e7c81102c",
+        "type": "function",
+        "z": "9e3d3c272cfa7f31",
+        "name": "function 4",
+        "func": "msg.headers = {\n  'Access-Control-Allow-Origin': '*',\n  'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',\n  'Access-Control-Allow-Headers': 'Content-Type',\n};\nreturn msg;\n",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 420,
+        "y": 440,
+        "wires": [
+            [
+                "47e64d7d7a8ee2cf"
+            ]
+        ]
+    },
+    {
+        "id": "2aee678e613109ec",
+        "type": "MySQLdatabase",
+        "name": "database",
+        "host": "mysql",
+        "port": "3306",
+        "db": "pousada",
+        "tz": "",
+        "charset": "UTF8"
+    }
+]
