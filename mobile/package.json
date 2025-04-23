@@ -32,7 +32,9 @@
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",
-    "expo": "^52.0.44"
+    "babel-plugin-dotenv-import": "^3.0.1",
+    "expo": "^52.0.44",
+    "react-native-dotenv": "^3.4.11"
   },
   "private": true
 }

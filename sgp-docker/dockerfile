@@ -1,0 +1,6 @@
+# Dockerfile
+
+FROM nodered/node-red:latest
+
+# Instala o nó MySQL automaticamente
+RUN npm install node-red-node-mysql
