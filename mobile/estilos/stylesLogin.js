@@ -1,84 +1,75 @@
-import { StyleSheet } from "react-native";
+import { StyleSheet } from 'react-native';
 
-const stylesLogin = StyleSheet.create({
+export default StyleSheet.create({
   loginContainer: {
     flex: 1,
-    backgroundColor: "#EDE6DA",
-    justifyContent: "center",
-    alignItems: "center",
+    backgroundColor: '#EDE6DA',
+    justifyContent: 'center',
+    alignItems: 'center',
     paddingHorizontal: 20,
   },
-                 
+
   loginBox: {
-    width: "100%",
-    maxWidth: 400,
-    backgroundColor: "#EDE6DA",
-    padding: 25,
-    borderRadius: 15,
-    shadowColor: "#000000",
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 1.1,
-    shadowRadius: 5,
+    width: '100%',
+    backgroundColor: '#fff',
+    borderRadius: 20,
+    padding: 30,
+    shadowColor: '#000',
+    shadowOpacity: 0.1,
+    shadowRadius: 10,
     elevation: 5,
-    opacity: 100,
-    alignItems: "center",
   },
+
   loginTitle: {
     fontSize: 24,
-    fontWeight: "bold",
+    fontWeight: 'bold',
+    color: '#2E7D32',
     marginBottom: 10,
-    textAlign: "center",
-    color: "#333",
+    textAlign: 'center',
   },
+
   loginSubtitle: {
     fontSize: 16,
-    color: "#666",
-    marginBottom: 20,
-    textAlign: "center",
+    color: '#555',
+    marginBottom: 25,
+    textAlign: 'center',
   },
+
   inputContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-    backgroundColor: "#f7f7f7",
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#EFEFEF',
     borderRadius: 10,
     paddingHorizontal: 10,
-    paddingVertical: 12,
     marginBottom: 15,
-    width: "100%",
   },
+
+  icon: {
+    marginRight: 10,
+  },
+
   input: {
     flex: 1,
-    marginLeft: 10,
-    color: "#333",
-  },
-  icon: {
-    marginRight: 5,
-  },
-  eyeIcon: {
-    padding: 4,
-  },
-  button: {
-    backgroundColor: "#000000",
-    paddingVertical: 14,
-    borderRadius: 10,
-    alignItems: "center",
-    marginTop: 10,
-    width: "100%",
-  },
-  buttonText: {
-    color: "#fff",
+    height: 50,
     fontSize: 16,
-    fontWeight: "600",
+    color: '#333',
   },
-  bottomTextContainer: {
-    alignItems: "center",
-    marginTop: 20,
+
+  loginButton: {
+    backgroundColor: '#2E7D32',
+    paddingVertical: 15,
+    borderRadius: 10,
+    alignItems: 'center',
+    marginTop: 10,
   },
-  bottomText: {
-    fontSize: 14,
-    color: "#20b2aa ",
-    textAlign: "center",
+
+  loginButtonText: {
+    color: '#fff',
+    fontSize: 16,
+    fontWeight: 'bold',
+  },
+
+  loadingIndicator: {
+    marginTop: 10,
   },
 });
-
-export default stylesLogin;

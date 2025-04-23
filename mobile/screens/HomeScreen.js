@@ -17,24 +17,26 @@ const places = [
     id: "1",
     name: "Domo",
     location: "Laguna-SC",
-    image: require("../assets/image/domo_1.jpeg"),
+    /*image: require("/"),*/
   },
   {
     id: "2",
     name: "Charrua (Bus)",
     location: "Laguna-SC",
-    image: require("../assets/image/bus_1.jpeg"),
+    /*image: require("/"),*/
   },
   {
     id: "3",
     name: "Suíte com cozinha",
     location: "Laguna-SC",
-    image: require("../assets/image/Suite.jpg"),
+    /*image: require("/"),*/
   },
 ];
 
 export default function HomeScreen({ navigation }) {
   const [footerVisible, setFooterVisible] = useState(false);
+  const [searchText, setSearchText] = useState("");
+  const [filteredPlaces, setFilteredPlaces] = useState(places);
 
   const handleScroll = (event) => {
     const contentHeight = event.nativeEvent.contentSize.height;
@@ -42,6 +44,13 @@ export default function HomeScreen({ navigation }) {
     const layoutHeight = event.nativeEvent.layoutMeasurement.height;
 
     setFooterVisible(contentHeight - contentOffsetY <= layoutHeight + 20);
+  };
+
+  const handleSearch = () => {
+    const filtered = places.filter((place) =>
+      place.name.toLowerCase().includes(searchText.toLowerCase())
+    );
+    setFilteredPlaces(filtered);
   };
 
   return (
@@ -67,9 +76,11 @@ export default function HomeScreen({ navigation }) {
               placeholder="Pesquisar"
               placeholderTextColor="white"
               style={styles.searchInput}
+              value={searchText}
+              onChangeText={setSearchText}
             />
           </View>
-          <TouchableOpacity style={styles.searchButton}>
+          <TouchableOpacity style={styles.searchButton} onPress={handleSearch}>
             <Ionicons name="search" size={24} color="white" />
           </TouchableOpacity>
         </View>
@@ -77,7 +88,7 @@ export default function HomeScreen({ navigation }) {
 
       <FlatList
         style={{ flex: 1 }}
-        data={places}
+        data={filteredPlaces}
         keyExtractor={(item) => item.id}
         numColumns={1}
         onScroll={handleScroll}

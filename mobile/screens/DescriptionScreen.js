@@ -54,7 +54,7 @@ const styles = StyleSheet.create({
     width: "100%",
     height: 200,
     borderRadius: 12,
-    marginBottom: 16,
+    marginBottom: 16, 
     marginTop: 40, // Deixa espaço para o botão
   },
   title: {
@@ -72,3 +72,4 @@ const styles = StyleSheet.create({
     textAlign: "justify",
   },
 });
+  
