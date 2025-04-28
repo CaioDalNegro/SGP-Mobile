@@ -12,8 +12,8 @@ export default function MainTabs() {
   return (
     <Tab.Navigator screenOptions={{ headerShown: false }}>
       <Tab.Screen name="Início" component={HomeScreen} />
-      {<Tab.Screen name="FavoriteScreen" component={FavoriteScreen}/>}
       {<Tab.Screen name="Favoritos" component={FavoriteScreen}/>}
+      {<Tab.Screen name="Perfil" component={PerfilScreen}/>}
       {<Tab.Screen name="Reservas" component={ReservaScreen}/>}
     </Tab.Navigator>
   );

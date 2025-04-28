@@ -15,4 +15,11 @@ npx expo install react-native-screens react-native-safe-area-context react-nativ
 
 npm install @react-navigation/native-stack
 
+----------------------
+- Docker
 
+cd sgp-docker
+
+docker-compose up --build
+
+docker exec -it <id do container> /bin/bash
