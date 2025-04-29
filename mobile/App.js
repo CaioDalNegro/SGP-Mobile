@@ -14,7 +14,7 @@ const Stack = createStackNavigator();
 
 export default function App() {
   return (
-    <FavoritesProvider> {/* ⬅️ envolva toda a navegação */}
+    <FavoritesProvider> 
       <NavigationContainer>
         <Stack.Navigator screenOptions={{ headerShown: false }}>
           <Stack.Screen name="Splash" component={SplashScreen} />

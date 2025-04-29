@@ -72,4 +72,10 @@ export default StyleSheet.create({
   loadingIndicator: {
     marginTop: 10,
   },
+  linkText: {
+    marginTop: 15,
+    color: '#007AFF',
+    textAlign: 'center',
+    textDecorationLine: 'underline',
+  },
 });

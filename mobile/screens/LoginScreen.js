@@ -3,9 +3,10 @@ import {
   View, Text, TextInput, TouchableOpacity,
   SafeAreaView, Alert, ActivityIndicator
 } from 'react-native';
+import axios from 'axios';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import styles from '../estilos/stylesLogin';
-import { adminCredentials } from '../config/admin'; // novo import
+import { adminCredentials } from '../config/admin'; // credenciais fixas
 
 export default function LoginScreen({ navigation }) {
   const [email, setEmail] = useState('');
@@ -13,7 +14,7 @@ export default function LoginScreen({ navigation }) {
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [loading, setLoading] = useState(false);
 
-  const handleLogin = () => {
+  const handleLogin = async () => {
     if (!email || !senha) {
       Alert.alert('Atenção', 'Preencha todos os campos antes de continuar.');
       return;
@@ -21,17 +22,32 @@ export default function LoginScreen({ navigation }) {
 
     setLoading(true);
 
-    setTimeout(() => {
-      if (email === adminCredentials.email && senha === adminCredentials.senha) {
-        navigation.reset({
-          index: 0,
-          routes: [{ name: 'Main' }],
-        });
-      } else {
-        Alert.alert('Erro de login', 'E-mail ou senha incorretos!');
-      }
+    // Verificando se é login fixo (admin)
+    if (email === adminCredentials.email && senha === adminCredentials.senha) {
+      navigation.reset({
+        index: 0,
+        routes: [{ name: 'Main' }], // Redireciona para a tela principal (ou outra desejada)
+      });
       setLoading(false);
-    }, 1000);
+      return;
+    }
+
+    // Caso contrário, tenta validar no banco
+    try {
+      const { data } = await axios.post('http://10.110.12.17:1880/login', { email, senha });
+
+      if (!data.sucesso) {
+        Alert.alert('Erro de login', data.erro);
+      } else {
+        navigation.reset({ index: 0, routes: [{ name: 'Main' }] });
+      }
+
+    } catch (error) {
+      console.error(error);
+      Alert.alert('Erro de login', 'Erro ao se conectar com o servidor.');
+    }
+
+    setLoading(false);
   };
 
   return (
@@ -48,6 +64,7 @@ export default function LoginScreen({ navigation }) {
             placeholder="Digite seu e-mail"
             placeholderTextColor="#999"
             keyboardType="email-address"
+            autoCapitalize="none"
             value={email}
             onChangeText={setEmail}
           />
@@ -64,7 +81,7 @@ export default function LoginScreen({ navigation }) {
             value={senha}
             onChangeText={setSenha}
           />
-          <TouchableOpacity onPress={() => setPasswordVisible(!passwordVisible)}>
+          <TouchableOpacity onPress={() => setPasswordVisible(v => !v)}>
             <Ionicons
               name={passwordVisible ? 'eye-off-outline' : 'eye-outline'}
               size={20}
@@ -86,6 +103,12 @@ export default function LoginScreen({ navigation }) {
             <Text style={styles.loginButtonText}>Entrar</Text>
           )}
         </TouchableOpacity>
+
+        {/* Botão para cadastro */}
+        <TouchableOpacity onPress={() => navigation.navigate('CadastroScreen')}>
+          <Text style={styles.linkText}>Não tem uma conta? Cadastre-se</Text>
+        </TouchableOpacity>
+        
       </View>
     </SafeAreaView>
   );

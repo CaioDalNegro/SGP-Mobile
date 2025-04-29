@@ -4,6 +4,8 @@ npm install -g expo-cli
 
 npm install
 
+npm install axios
+
 npx expo start
 
 ----------------------

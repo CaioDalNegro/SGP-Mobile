@@ -4,6 +4,7 @@ import HomeScreen from '../screens/HomeScreen';
 import FavoriteScreen from '../screens/FavoriteScreen';
 import PerfilScreen from '../screens/PerfilScreen';
 import ReservaScreen from '../screens/ReservaScreen';
+import CadastroScreen from '../screens/CadastroScreen';
 // pode adicionar outras telas no futuro, como Estoque, Perfil, etc.
 
 const Tab = createBottomTabNavigator();
@@ -15,6 +16,7 @@ export default function MainTabs() {
       {<Tab.Screen name="Favoritos" component={FavoriteScreen}/>}
       {<Tab.Screen name="Perfil" component={PerfilScreen}/>}
       {<Tab.Screen name="Reservas" component={ReservaScreen}/>}
+      {<Tab.Screen name="Cadastro" component={CadastroScreen}/>}
     </Tab.Navigator>
   );
 }
