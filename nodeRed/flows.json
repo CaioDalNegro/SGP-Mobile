@@ -1,22 +1,414 @@
 [
     {
-        "id": "fd0cf62ee6fa0034",
+        "id": "47bff4e9e0229fe7",
+        "type": "tab",
+        "label": "API Reservas",
+        "disabled": false,
+        "info": ""
+    },
+    {
+        "id": "275beff789e7ddaf",
+        "type": "http in",
+        "z": "47bff4e9e0229fe7",
+        "name": "GET /reservas",
+        "url": "/reservas",
+        "method": "get",
+        "upload": false,
+        "swaggerDoc": "",
+        "x": 130,
+        "y": 220,
+        "wires": [
+            [
+                "19cf6479094c96f4"
+            ]
+        ]
+    },
+    {
+        "id": "19cf6479094c96f4",
         "type": "function",
-        "z": "9e3d3c272cfa7f31",
-        "name": "Preparar login",
-        "func": "const { email, senha } = msg.payload;\nif (!email || !senha) {\n  node.error(\"E-mail ou senha não informados\");\n  msg.res = { statusCode: 400 };\n  msg.payload = { sucesso: false, erro: 'E-mail e senha são obrigatórios.' };\n  return msg;\n}\nmsg.topic = \"SELECT * FROM cadastro WHERE email = ? AND senha = ?\";\nmsg.payload = [ email, senha ];\nreturn msg;\n",
+        "z": "47bff4e9e0229fe7",
+        "name": "Buscar Reservas",
+        "func": "msg.payload = global.get(\"reservas\") || [];\nreturn msg;",
         "outputs": 1,
         "timeout": "",
         "noerr": 0,
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 540,
-        "y": 120,
+        "x": 320,
+        "y": 220,
         "wires": [
             [
-                "209e796b65201101"
+                "10ee085c98e7dae2"
             ]
         ]
+    },
+    {
+        "id": "10ee085c98e7dae2",
+        "type": "http response",
+        "z": "47bff4e9e0229fe7",
+        "name": "",
+        "statusCode": "",
+        "headers": {},
+        "x": 520,
+        "y": 220,
+        "wires": []
+    },
+    {
+        "id": "fe521baf3394e9eb",
+        "type": "http in",
+        "z": "47bff4e9e0229fe7",
+        "name": "POST /reservas",
+        "url": "/reservas",
+        "method": "post",
+        "upload": false,
+        "swaggerDoc": "",
+        "x": 140,
+        "y": 300,
+        "wires": [
+            [
+                "ad8ab4d6bd43523e"
+            ]
+        ]
+    },
+    {
+        "id": "ad8ab4d6bd43523e",
+        "type": "json",
+        "z": "47bff4e9e0229fe7",
+        "name": "Converter JSON",
+        "property": "payload",
+        "action": "obj",
+        "pretty": false,
+        "x": 330,
+        "y": 300,
+        "wires": [
+            [
+                "07e13969a53f63f6"
+            ]
+        ]
+    },
+    {
+        "id": "d6c7f7497adace37",
+        "type": "mysql",
+        "z": "47bff4e9e0229fe7",
+        "mydb": "2aee678e613109ec",
+        "name": "pousada",
+        "x": 760,
+        "y": 420,
+        "wires": [
+            [
+                "ec62bb72e5d49fe6",
+                "3a90652114525890"
+            ]
+        ]
+    },
+    {
+        "id": "23efbf1067104b4e",
+        "type": "function",
+        "z": "47bff4e9e0229fe7",
+        "name": "function 3",
+        "func": "const r = msg.payload;\nmsg.topic = `INSERT INTO reservas\n  (nome, email, data_checkin, data_checkout, quarto)\n  VALUES ('${r.nome}', '${r.email}', '${r.data_checkin}', '${r.data_checkout}', '${r.quarto}')`;\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 440,
+        "y": 420,
+        "wires": [
+            [
+                "d6c7f7497adace37"
+            ]
+        ]
+    },
+    {
+        "id": "e896be0c8094dc7f",
+        "type": "http in",
+        "z": "47bff4e9e0229fe7",
+        "name": "Adicionar_Banco",
+        "url": "http://10.110.12.57:1880",
+        "method": "post",
+        "upload": false,
+        "swaggerDoc": "",
+        "x": 140,
+        "y": 420,
+        "wires": [
+            [
+                "23efbf1067104b4e",
+                "8a27d9c10d0b91b2"
+            ]
+        ]
+    },
+    {
+        "id": "66fceeade98e2ca7",
+        "type": "http response",
+        "z": "47bff4e9e0229fe7",
+        "name": "retorno",
+        "statusCode": "",
+        "headers": {},
+        "x": 1180,
+        "y": 500,
+        "wires": []
+    },
+    {
+        "id": "8a27d9c10d0b91b2",
+        "type": "function",
+        "z": "47bff4e9e0229fe7",
+        "name": "function 4",
+        "func": "msg.headers = {\n  'Access-Control-Allow-Origin': '*',\n  'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',\n  'Access-Control-Allow-Headers': 'Content-Type',\n};\nreturn msg;\n",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 440,
+        "y": 500,
+        "wires": [
+            [
+                "66fceeade98e2ca7"
+            ]
+        ]
+    },
+    {
+        "id": "a86e95d40f477099",
+        "type": "http in",
+        "z": "47bff4e9e0229fe7",
+        "name": "POST /login",
+        "url": "/login",
+        "method": "post",
+        "upload": false,
+        "swaggerDoc": "",
+        "x": 130,
+        "y": 100,
+        "wires": [
+            [
+                "b17132f0123b7f61"
+            ]
+        ]
+    },
+    {
+        "id": "b17132f0123b7f61",
+        "type": "json",
+        "z": "47bff4e9e0229fe7",
+        "name": "Converter JSON",
+        "property": "payload",
+        "action": "obj",
+        "pretty": false,
+        "x": 320,
+        "y": 100,
+        "wires": [
+            [
+                "d4739ebbfaf6c863"
+            ]
+        ]
+    },
+    {
+        "id": "d4739ebbfaf6c863",
+        "type": "function",
+        "z": "47bff4e9e0229fe7",
+        "name": "Preparar consulta login",
+        "func": "const email = msg.payload.email.trim().toLowerCase();\nconst senha = msg.payload.senha.trim();  // não altere senha para lowercase!\n\nmsg.topic = \"SELECT * FROM cadastro WHERE email = ? AND senha = ?\";\nmsg.payload = [email, senha];\n\nreturn msg;\n",
+        "outputs": 1,
+        "timeout": "",
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 570,
+        "y": 100,
+        "wires": [
+            [
+                "d6c7f7497adace37"
+            ]
+        ]
+    },
+    {
+        "id": "3a90652114525890",
+        "type": "function",
+        "z": "47bff4e9e0229fe7",
+        "name": "Formatar resposta login",
+        "func": " if (msg.payload.length > 0) {\n     msg.payload = { sucesso: true, usuario: msg.payload[0] };\n } else {\n     msg.payload = { sucesso: false, erro: \"Usuário ou senha inválidos\" };\n }\n return msg;\n",
+        "outputs": 1,
+        "timeout": "",
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 970,
+        "y": 100,
+        "wires": [
+            [
+                "e2675c36330aee3b",
+                "57fddd2d1e537333"
+            ]
+        ]
+    },
+    {
+        "id": "e2675c36330aee3b",
+        "type": "http response",
+        "z": "47bff4e9e0229fe7",
+        "name": "Retorno HTTP",
+        "statusCode": "",
+        "headers": {},
+        "x": 1190,
+        "y": 100,
+        "wires": []
+    },
+    {
+        "id": "c6a14dab576496b7",
+        "type": "http in",
+        "z": "47bff4e9e0229fe7",
+        "name": "POST /cadastro",
+        "url": "/cadastro",
+        "method": "post",
+        "upload": false,
+        "swaggerDoc": "",
+        "x": 140,
+        "y": 160,
+        "wires": [
+            [
+                "837cad6ba9cb340f"
+            ]
+        ]
+    },
+    {
+        "id": "837cad6ba9cb340f",
+        "type": "function",
+        "z": "47bff4e9e0229fe7",
+        "name": "Preparar dados",
+        "func": "node.warn(\"📦 Dados recebidos para cadastro:\");\nnode.warn(msg.payload);\n\nmsg.topic = \"INSERT INTO cadastro (nome, email, senha) VALUES (?, ?, ?)\";\nmsg.payload = [\n    msg.payload.nome,\n    msg.payload.email,\n    msg.payload.senha\n];\nreturn msg;\n",
+        "outputs": 1,
+        "timeout": "",
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 560,
+        "y": 160,
+        "wires": [
+            [
+                "d6c7f7497adace37"
+            ]
+        ]
+    },
+    {
+        "id": "57fddd2d1e537333",
+        "type": "debug",
+        "z": "47bff4e9e0229fe7",
+        "name": "debug 2",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1180,
+        "y": 140,
+        "wires": []
+    },
+    {
+        "id": "07e13969a53f63f6",
+        "type": "function",
+        "z": "47bff4e9e0229fe7",
+        "name": "Salvar Dados",
+        "func": "msg.origReserva = msg.payload; // em vez de usar flow.set()\nreturn msg;\n",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 520,
+        "y": 300,
+        "wires": [
+            [
+                "d2a1189f4f20be2e"
+            ]
+        ]
+    },
+    {
+        "id": "d2a1189f4f20be2e",
+        "type": "function",
+        "z": "47bff4e9e0229fe7",
+        "name": "id_cadastro",
+        "func": "const email = (msg.payload.email || \"\").trim().toLowerCase();\nmsg.topic = \"SELECT id FROM cadastro WHERE LOWER(email) = ?\";\nmsg.payload = [email];  // Passando o email para o MySQL\nreturn msg;\n",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 550,
+        "y": 360,
+        "wires": [
+            [
+                "d6c7f7497adace37"
+            ]
+        ]
+    },
+    {
+        "id": "ec62bb72e5d49fe6",
+        "type": "function",
+        "z": "47bff4e9e0229fe7",
+        "name": "Verifica resposta",
+        "func": "if (msg.payload.length > 0) {\n    const idCad = msg.payload[0].id; // Obter o id_cadastro\n    flow.set('id_cadastro', idCad); // Salvar o id_cadastro para usar depois\n    return msg;\n} else {\n    msg.payload = { status: \"erro\", mensagem: \"E-mail não encontrado\" };\n    return msg;\n}\n",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 990,
+        "y": 280,
+        "wires": [
+            [
+                "24618463a84d2cbc"
+            ]
+        ]
+    },
+    {
+        "id": "24618463a84d2cbc",
+        "type": "function",
+        "z": "47bff4e9e0229fe7",
+        "name": "Inserir tabela",
+        "func": "const idCad = msg.payload[0].id;\nconst dados = msg.origReserva;\n\nmsg.topic = \"INSERT INTO reservas (id_cadastro, nome, email, data_checkin, data_checkout, quarto) VALUES (?, ?, ?, ?, ?, ?)\";\nmsg.payload = [\n  idCad,\n  dados.nome,\n  dados.email,\n  dados.data_checkin,\n  dados.data_checkout,\n  dados.quarto\n];\nreturn msg;\n",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1170,
+        "y": 280,
+        "wires": [
+            [
+                "733e007787334d6b"
+            ]
+        ]
+    },
+    {
+        "id": "733e007787334d6b",
+        "type": "mysql",
+        "z": "47bff4e9e0229fe7",
+        "mydb": "2aee678e613109ec",
+        "name": "pousada",
+        "x": 1320,
+        "y": 280,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "2aee678e613109ec",
+        "type": "MySQLdatabase",
+        "name": "database",
+        "host": "mysql",
+        "port": "3306",
+        "db": "pousada",
+        "tz": "",
+        "charset": "UTF8"
     }
 ]

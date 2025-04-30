@@ -9,15 +9,6 @@ npm install axios
 npx expo start
 
 ----------------------
-- instalar navigation
-
-npm install @react-navigation/native
-
-npx expo install react-native-screens react-native-safe-area-context react-native-gesture-handler react-native-reanimated react-native-vector-icons
-
-npm install @react-navigation/native-stack
-
-----------------------
 - Docker
 
 cd sgp-docker

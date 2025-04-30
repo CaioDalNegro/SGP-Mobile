@@ -1,4 +1,4 @@
-const API_BASE = "http://10.110.12.17:1880"; // Para Android Emulator; altere para seu IP local se necessário
+const API_BASE = "http://10.110.12.57:1880"; // Para Android Emulator; altere para seu IP local se necessário
 
 export async function criarReserva(reserva) {
   try {

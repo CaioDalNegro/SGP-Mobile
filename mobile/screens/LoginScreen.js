@@ -34,7 +34,7 @@ export default function LoginScreen({ navigation }) {
 
     // Caso contrário, tenta validar no banco
     try {
-      const { data } = await axios.post('http://10.110.12.17:1880/login', { email, senha });
+      const { data } = await axios.post('http://10.110.12.57:1880/login', { email, senha });
 
       if (!data.sucesso) {
         Alert.alert('Erro de login', data.erro);
@@ -102,11 +102,6 @@ export default function LoginScreen({ navigation }) {
           ) : (
             <Text style={styles.loginButtonText}>Entrar</Text>
           )}
-        </TouchableOpacity>
-
-        {/* Botão para cadastro */}
-        <TouchableOpacity onPress={() => navigation.navigate('CadastroScreen')}>
-          <Text style={styles.linkText}>Não tem uma conta? Cadastre-se</Text>
         </TouchableOpacity>
         
       </View>
