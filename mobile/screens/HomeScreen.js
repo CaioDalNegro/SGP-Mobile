@@ -19,19 +19,19 @@ const places = [
     name: "Domo",
     location: "Laguna-SC",
     // se tiver imagem local, descomente:
-    // image: require("../assets/image/domo.jpg"),
+    image: require("../assets/image/domo/domo_noite.jpg"),
   },
   {
     id: "2",
     name: "Charrua (Bus)",
     location: "Laguna-SC",
-    // image: require("../assets/image/bus.jpg"),
+    image: require("../assets/image/charrua (bus)/bus_main.jpg"),
   },
   {
     id: "3",
     name: "Suíte com cozinha",
     location: "Laguna-SC",
-    // image: require("../assets/image/suite.jpg"),
+    image: require("../assets/image/suite com cozinha/suite_main.jpg"),
   },
 ];
 
@@ -60,7 +60,7 @@ export default function HomeScreen({ navigation }) {
   };
 
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: "#fff" }}>
+    <SafeAreaView style={{ flex: 1, backgroundColor: "#EDE6DA" }}>
       {/* Header */}
       <View style={styles.header}>
         <View style={styles.headerTop}>
