@@ -88,21 +88,6 @@
         ]
     },
     {
-        "id": "d6c7f7497adace37",
-        "type": "mysql",
-        "z": "47bff4e9e0229fe7",
-        "mydb": "2aee678e613109ec",
-        "name": "pousada",
-        "x": 760,
-        "y": 420,
-        "wires": [
-            [
-                "ec62bb72e5d49fe6",
-                "3a90652114525890"
-            ]
-        ]
-    },
-    {
         "id": "23efbf1067104b4e",
         "type": "function",
         "z": "47bff4e9e0229fe7",
@@ -314,7 +299,7 @@
         "type": "function",
         "z": "47bff4e9e0229fe7",
         "name": "Salvar Dados",
-        "func": "msg.origReserva = msg.payload; // em vez de usar flow.set()\nreturn msg;\n",
+        "func": "msg.origReserva = msg.payload; \nreturn msg;\n",
         "outputs": 1,
         "timeout": 0,
         "noerr": 0,
@@ -334,7 +319,7 @@
         "type": "function",
         "z": "47bff4e9e0229fe7",
         "name": "id_cadastro",
-        "func": "const email = (msg.payload.email || \"\").trim().toLowerCase();\nmsg.topic = \"SELECT id FROM cadastro WHERE LOWER(email) = ?\";\nmsg.payload = [email];  // Passando o email para o MySQL\nreturn msg;\n",
+        "func": "// Garante que msg.origReserva seja preservado se ainda não foi\nif (!msg.origReserva && msg.payload.origReserva) {\n    msg.origReserva = msg.payload.origReserva;\n}\n\n// Pega o email da reserva original\nconst email = (msg.origReserva.email || \"\").trim().toLowerCase();\n\nmsg.topic = \"SELECT id FROM cadastro WHERE LOWER(email) = ?\";\nmsg.payload = [email];\n\nreturn msg;\n",
         "outputs": 1,
         "timeout": 0,
         "noerr": 0,
@@ -354,7 +339,7 @@
         "type": "function",
         "z": "47bff4e9e0229fe7",
         "name": "Verifica resposta",
-        "func": "if (msg.payload.length > 0) {\n    const idCad = msg.payload[0].id; // Obter o id_cadastro\n    flow.set('id_cadastro', idCad); // Salvar o id_cadastro para usar depois\n    return msg;\n} else {\n    msg.payload = { status: \"erro\", mensagem: \"E-mail não encontrado\" };\n    return msg;\n}\n",
+        "func": "if (msg.payload.length > 0) {\n    const idCad = msg.payload[0].id; // Obter o id_cadastro\n    flow.set('id_cadastro', idCad); // Salvar o id_cadastro para usar depois\n\n    // Garante que origReserva continue existindo\n    msg.origReserva = msg.origReserva || {};\n\n    return msg;\n} else {\n    msg.payload = { status: \"erro\", mensagem: \"E-mail não encontrado\" };\n    return msg;\n}\n",
         "outputs": 1,
         "timeout": 0,
         "noerr": 0,
@@ -399,6 +384,21 @@
         "y": 280,
         "wires": [
             []
+        ]
+    },
+    {
+        "id": "d6c7f7497adace37",
+        "type": "mysql",
+        "z": "47bff4e9e0229fe7",
+        "mydb": "2aee678e613109ec",
+        "name": "pousada",
+        "x": 760,
+        "y": 420,
+        "wires": [
+            [
+                "ec62bb72e5d49fe6",
+                "3a90652114525890"
+            ]
         ]
     },
     {
