@@ -1,32 +1,32 @@
 [
     {
-        "id": "47bff4e9e0229fe7",
+        "id": "adf3aa2c4190453d",
         "type": "tab",
         "label": "API Reservas",
         "disabled": false,
         "info": ""
     },
     {
-        "id": "275beff789e7ddaf",
+        "id": "a2dc7c1c2a0d49d3",
         "type": "http in",
-        "z": "47bff4e9e0229fe7",
+        "z": "adf3aa2c4190453d",
         "name": "GET /reservas",
         "url": "/reservas",
         "method": "get",
         "upload": false,
         "swaggerDoc": "",
         "x": 130,
-        "y": 220,
+        "y": 240,
         "wires": [
             [
-                "19cf6479094c96f4"
+                "152e30f414099565"
             ]
         ]
     },
     {
-        "id": "19cf6479094c96f4",
+        "id": "152e30f414099565",
         "type": "function",
-        "z": "47bff4e9e0229fe7",
+        "z": "adf3aa2c4190453d",
         "name": "Buscar Reservas",
         "func": "msg.payload = global.get(\"reservas\") || [];\nreturn msg;",
         "outputs": 1,
@@ -35,29 +35,29 @@
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 320,
-        "y": 220,
+        "x": 330,
+        "y": 240,
         "wires": [
             [
-                "10ee085c98e7dae2"
+                "0e28dada65f0c86c"
             ]
         ]
     },
     {
-        "id": "10ee085c98e7dae2",
+        "id": "0e28dada65f0c86c",
         "type": "http response",
-        "z": "47bff4e9e0229fe7",
+        "z": "adf3aa2c4190453d",
         "name": "",
         "statusCode": "",
         "headers": {},
-        "x": 520,
-        "y": 220,
+        "x": 510,
+        "y": 240,
         "wires": []
     },
     {
-        "id": "fe521baf3394e9eb",
+        "id": "504026b93bde8a49",
         "type": "http in",
-        "z": "47bff4e9e0229fe7",
+        "z": "adf3aa2c4190453d",
         "name": "POST /reservas",
         "url": "/reservas",
         "method": "post",
@@ -67,14 +67,14 @@
         "y": 300,
         "wires": [
             [
-                "ad8ab4d6bd43523e"
+                "dd3410b4101b541d"
             ]
         ]
     },
     {
-        "id": "ad8ab4d6bd43523e",
+        "id": "dd3410b4101b541d",
         "type": "json",
-        "z": "47bff4e9e0229fe7",
+        "z": "adf3aa2c4190453d",
         "name": "Converter JSON",
         "property": "payload",
         "action": "obj",
@@ -83,14 +83,14 @@
         "y": 300,
         "wires": [
             [
-                "07e13969a53f63f6"
+                "665ad03cc8ba9a9d"
             ]
         ]
     },
     {
-        "id": "23efbf1067104b4e",
+        "id": "14205e4f270c6ec3",
         "type": "function",
-        "z": "47bff4e9e0229fe7",
+        "z": "adf3aa2c4190453d",
         "name": "function 3",
         "func": "const r = msg.payload;\nmsg.topic = `INSERT INTO reservas\n  (nome, email, data_checkin, data_checkout, quarto)\n  VALUES ('${r.nome}', '${r.email}', '${r.data_checkin}', '${r.data_checkout}', '${r.quarto}')`;\nreturn msg;",
         "outputs": 1,
@@ -103,16 +103,16 @@
         "y": 420,
         "wires": [
             [
-                "d6c7f7497adace37"
+                "1fb5df3f0aa1295c"
             ]
         ]
     },
     {
-        "id": "e896be0c8094dc7f",
+        "id": "38906bb23420eacc",
         "type": "http in",
-        "z": "47bff4e9e0229fe7",
+        "z": "adf3aa2c4190453d",
         "name": "Adicionar_Banco",
-        "url": "http://10.110.12.57:1880",
+        "url": "http://10.110.12.68:1880",
         "method": "post",
         "upload": false,
         "swaggerDoc": "",
@@ -120,26 +120,26 @@
         "y": 420,
         "wires": [
             [
-                "23efbf1067104b4e",
-                "8a27d9c10d0b91b2"
+                "14205e4f270c6ec3",
+                "7f9de9fbc1898ee5"
             ]
         ]
     },
     {
-        "id": "66fceeade98e2ca7",
+        "id": "321abb4cd5826f22",
         "type": "http response",
-        "z": "47bff4e9e0229fe7",
+        "z": "adf3aa2c4190453d",
         "name": "retorno",
         "statusCode": "",
         "headers": {},
-        "x": 1180,
+        "x": 600,
         "y": 500,
         "wires": []
     },
     {
-        "id": "8a27d9c10d0b91b2",
+        "id": "7f9de9fbc1898ee5",
         "type": "function",
-        "z": "47bff4e9e0229fe7",
+        "z": "adf3aa2c4190453d",
         "name": "function 4",
         "func": "msg.headers = {\n  'Access-Control-Allow-Origin': '*',\n  'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',\n  'Access-Control-Allow-Headers': 'Content-Type',\n};\nreturn msg;\n",
         "outputs": 1,
@@ -152,47 +152,47 @@
         "y": 500,
         "wires": [
             [
-                "66fceeade98e2ca7"
+                "321abb4cd5826f22"
             ]
         ]
     },
     {
-        "id": "a86e95d40f477099",
+        "id": "a0712c8993f7c76d",
         "type": "http in",
-        "z": "47bff4e9e0229fe7",
+        "z": "adf3aa2c4190453d",
         "name": "POST /login",
         "url": "/login",
         "method": "post",
         "upload": false,
         "swaggerDoc": "",
         "x": 130,
-        "y": 100,
+        "y": 180,
         "wires": [
             [
-                "b17132f0123b7f61"
+                "f082ae359053de37"
             ]
         ]
     },
     {
-        "id": "b17132f0123b7f61",
+        "id": "f082ae359053de37",
         "type": "json",
-        "z": "47bff4e9e0229fe7",
+        "z": "adf3aa2c4190453d",
         "name": "Converter JSON",
         "property": "payload",
         "action": "obj",
         "pretty": false,
         "x": 320,
-        "y": 100,
+        "y": 180,
         "wires": [
             [
-                "d4739ebbfaf6c863"
+                "d1caddb867b280c2"
             ]
         ]
     },
     {
-        "id": "d4739ebbfaf6c863",
+        "id": "d1caddb867b280c2",
         "type": "function",
-        "z": "47bff4e9e0229fe7",
+        "z": "adf3aa2c4190453d",
         "name": "Preparar consulta login",
         "func": "const email = msg.payload.email.trim().toLowerCase();\nconst senha = msg.payload.senha.trim();  // não altere senha para lowercase!\n\nmsg.topic = \"SELECT * FROM cadastro WHERE email = ? AND senha = ?\";\nmsg.payload = [email, senha];\n\nreturn msg;\n",
         "outputs": 1,
@@ -201,18 +201,18 @@
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 570,
-        "y": 100,
+        "x": 530,
+        "y": 180,
         "wires": [
             [
-                "d6c7f7497adace37"
+                "01e1e04c1addbef7"
             ]
         ]
     },
     {
-        "id": "3a90652114525890",
+        "id": "27611bbc4f193d65",
         "type": "function",
-        "z": "47bff4e9e0229fe7",
+        "z": "adf3aa2c4190453d",
         "name": "Formatar resposta login",
         "func": " if (msg.payload.length > 0) {\n     msg.payload = { sucesso: true, usuario: msg.payload[0] };\n } else {\n     msg.payload = { sucesso: false, erro: \"Usuário ou senha inválidos\" };\n }\n return msg;\n",
         "outputs": 1,
@@ -221,47 +221,47 @@
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 970,
-        "y": 100,
+        "x": 930,
+        "y": 180,
         "wires": [
             [
-                "e2675c36330aee3b",
-                "57fddd2d1e537333"
+                "75a0c7aa797abc3c",
+                "df7390edf44129a7"
             ]
         ]
     },
     {
-        "id": "e2675c36330aee3b",
+        "id": "75a0c7aa797abc3c",
         "type": "http response",
-        "z": "47bff4e9e0229fe7",
+        "z": "adf3aa2c4190453d",
         "name": "Retorno HTTP",
         "statusCode": "",
         "headers": {},
-        "x": 1190,
-        "y": 100,
+        "x": 1160,
+        "y": 180,
         "wires": []
     },
     {
-        "id": "c6a14dab576496b7",
+        "id": "44c3b8ccd16ae6ad",
         "type": "http in",
-        "z": "47bff4e9e0229fe7",
+        "z": "adf3aa2c4190453d",
         "name": "POST /cadastro",
         "url": "/cadastro",
         "method": "post",
         "upload": false,
         "swaggerDoc": "",
         "x": 140,
-        "y": 160,
+        "y": 80,
         "wires": [
             [
-                "837cad6ba9cb340f"
+                "5247f22b57a5c48c"
             ]
         ]
     },
     {
-        "id": "837cad6ba9cb340f",
+        "id": "5247f22b57a5c48c",
         "type": "function",
-        "z": "47bff4e9e0229fe7",
+        "z": "adf3aa2c4190453d",
         "name": "Preparar dados",
         "func": "node.warn(\"📦 Dados recebidos para cadastro:\");\nnode.warn(msg.payload);\n\nmsg.topic = \"INSERT INTO cadastro (nome, email, senha) VALUES (?, ?, ?)\";\nmsg.payload = [\n    msg.payload.nome,\n    msg.payload.email,\n    msg.payload.senha\n];\nreturn msg;\n",
         "outputs": 1,
@@ -270,34 +270,35 @@
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 560,
-        "y": 160,
+        "x": 320,
+        "y": 80,
         "wires": [
             [
-                "d6c7f7497adace37"
+                "25743fbff661e235"
             ]
         ]
     },
     {
-        "id": "57fddd2d1e537333",
+        "id": "df7390edf44129a7",
         "type": "debug",
-        "z": "47bff4e9e0229fe7",
-        "name": "debug 2",
+        "z": "adf3aa2c4190453d",
+        "name": "debug/Login",
         "active": true,
         "tosidebar": true,
         "console": false,
         "tostatus": false,
-        "complete": "false",
+        "complete": "payload",
+        "targetType": "msg",
         "statusVal": "",
         "statusType": "auto",
-        "x": 1180,
-        "y": 140,
+        "x": 1150,
+        "y": 220,
         "wires": []
     },
     {
-        "id": "07e13969a53f63f6",
+        "id": "665ad03cc8ba9a9d",
         "type": "function",
-        "z": "47bff4e9e0229fe7",
+        "z": "adf3aa2c4190453d",
         "name": "Salvar Dados",
         "func": "msg.origReserva = msg.payload; \nreturn msg;\n",
         "outputs": 1,
@@ -310,14 +311,14 @@
         "y": 300,
         "wires": [
             [
-                "d2a1189f4f20be2e"
+                "e854b1a00d29ead5"
             ]
         ]
     },
     {
-        "id": "d2a1189f4f20be2e",
+        "id": "e854b1a00d29ead5",
         "type": "function",
-        "z": "47bff4e9e0229fe7",
+        "z": "adf3aa2c4190453d",
         "name": "id_cadastro",
         "func": "// Garante que msg.origReserva seja preservado se ainda não foi\nif (!msg.origReserva && msg.payload.origReserva) {\n    msg.origReserva = msg.payload.origReserva;\n}\n\n// Pega o email da reserva original\nconst email = (msg.origReserva.email || \"\").trim().toLowerCase();\n\nmsg.topic = \"SELECT id FROM cadastro WHERE LOWER(email) = ?\";\nmsg.payload = [email];\n\nreturn msg;\n",
         "outputs": 1,
@@ -326,18 +327,18 @@
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 550,
-        "y": 360,
+        "x": 690,
+        "y": 300,
         "wires": [
             [
-                "d6c7f7497adace37"
+                "1fb5df3f0aa1295c"
             ]
         ]
     },
     {
-        "id": "ec62bb72e5d49fe6",
+        "id": "374a4dc23ca45904",
         "type": "function",
-        "z": "47bff4e9e0229fe7",
+        "z": "adf3aa2c4190453d",
         "name": "Verifica resposta",
         "func": "if (msg.payload.length > 0) {\n    const idCad = msg.payload[0].id; // Obter o id_cadastro\n    flow.set('id_cadastro', idCad); // Salvar o id_cadastro para usar depois\n\n    // Garante que origReserva continue existindo\n    msg.origReserva = msg.origReserva || {};\n\n    return msg;\n} else {\n    msg.payload = { status: \"erro\", mensagem: \"E-mail não encontrado\" };\n    return msg;\n}\n",
         "outputs": 1,
@@ -346,18 +347,18 @@
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 990,
-        "y": 280,
+        "x": 790,
+        "y": 420,
         "wires": [
             [
-                "24618463a84d2cbc"
+                "fe2960f8de2b8fac"
             ]
         ]
     },
     {
-        "id": "24618463a84d2cbc",
+        "id": "fe2960f8de2b8fac",
         "type": "function",
-        "z": "47bff4e9e0229fe7",
+        "z": "adf3aa2c4190453d",
         "name": "Inserir tabela",
         "func": "const idCad = msg.payload[0].id;\nconst dados = msg.origReserva;\n\nmsg.topic = \"INSERT INTO reservas (id_cadastro, nome, email, data_checkin, data_checkout, quarto) VALUES (?, ?, ?, ?, ?, ?)\";\nmsg.payload = [\n  idCad,\n  dados.nome,\n  dados.email,\n  dados.data_checkin,\n  dados.data_checkout,\n  dados.quarto\n];\nreturn msg;\n",
         "outputs": 1,
@@ -366,40 +367,91 @@
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 1170,
-        "y": 280,
-        "wires": [
-            [
-                "733e007787334d6b"
-            ]
-        ]
-    },
-    {
-        "id": "733e007787334d6b",
-        "type": "mysql",
-        "z": "47bff4e9e0229fe7",
-        "mydb": "2aee678e613109ec",
-        "name": "pousada",
-        "x": 1320,
-        "y": 280,
-        "wires": [
-            []
-        ]
-    },
-    {
-        "id": "d6c7f7497adace37",
-        "type": "mysql",
-        "z": "47bff4e9e0229fe7",
-        "mydb": "2aee678e613109ec",
-        "name": "pousada",
-        "x": 760,
+        "x": 970,
         "y": 420,
         "wires": [
             [
-                "ec62bb72e5d49fe6",
-                "3a90652114525890"
+                "afbb8d75a89ca9e2"
             ]
         ]
+    },
+    {
+        "id": "1fb5df3f0aa1295c",
+        "type": "mysql",
+        "z": "adf3aa2c4190453d",
+        "mydb": "2aee678e613109ec",
+        "name": "pousada",
+        "x": 620,
+        "y": 420,
+        "wires": [
+            [
+                "374a4dc23ca45904"
+            ]
+        ]
+    },
+    {
+        "id": "afbb8d75a89ca9e2",
+        "type": "mysql",
+        "z": "adf3aa2c4190453d",
+        "mydb": "2aee678e613109ec",
+        "name": "pousada",
+        "x": 1120,
+        "y": 420,
+        "wires": [
+            [
+                "369e570963c13fbd"
+            ]
+        ]
+    },
+    {
+        "id": "01e1e04c1addbef7",
+        "type": "mysql",
+        "z": "adf3aa2c4190453d",
+        "mydb": "2aee678e613109ec",
+        "name": "Banco/Login",
+        "x": 730,
+        "y": 180,
+        "wires": [
+            [
+                "27611bbc4f193d65"
+            ]
+        ]
+    },
+    {
+        "id": "67658b864077bbb6",
+        "type": "http response",
+        "z": "adf3aa2c4190453d",
+        "name": "Retorno HTTP",
+        "statusCode": "",
+        "headers": {},
+        "x": 700,
+        "y": 80,
+        "wires": []
+    },
+    {
+        "id": "25743fbff661e235",
+        "type": "mysql",
+        "z": "adf3aa2c4190453d",
+        "mydb": "2aee678e613109ec",
+        "name": "Banco/cadastro",
+        "x": 500,
+        "y": 80,
+        "wires": [
+            [
+                "67658b864077bbb6"
+            ]
+        ]
+    },
+    {
+        "id": "369e570963c13fbd",
+        "type": "http response",
+        "z": "adf3aa2c4190453d",
+        "name": "retorno",
+        "statusCode": "",
+        "headers": {},
+        "x": 1260,
+        "y": 420,
+        "wires": []
     },
     {
         "id": "2aee678e613109ec",

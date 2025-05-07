@@ -1,14 +1,6 @@
 cd mobile
 
-npm install -g expo-cli
-
-npx expo install expo@^53.0.0
-
-npx expo install --fix
-
-npm install
-
-npm install axios
+npm install --legacy-peer-deps
 
 npx expo start
 
