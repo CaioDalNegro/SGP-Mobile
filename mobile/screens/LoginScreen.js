@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import {
   View, Text, TextInput, TouchableOpacity,
   SafeAreaView, Alert, ActivityIndicator
@@ -7,12 +7,14 @@ import axios from 'axios';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import styles from '../estilos/stylesLogin';
 import { adminCredentials } from '../config/admin'; // credenciais fixas
+import { UserContext } from '../context/UserContext'; // Importando o contexto
 
 export default function LoginScreen({ navigation }) {
   const [email, setEmail] = useState('');
   const [senha, setSenha] = useState('');
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [loading, setLoading] = useState(false);
+  const { setUserData } = useContext(UserContext); // Obtendo o setUserData do contexto
 
   const handleLogin = async () => {
     if (!email || !senha) {
@@ -39,6 +41,9 @@ export default function LoginScreen({ navigation }) {
       if (!data.sucesso) {
         Alert.alert('Erro de login', data.erro);
       } else {
+        // Atualizando o contexto com os dados do usuário
+        setUserData(data.usuario); // Supondo que data.usuario seja o objeto do usuário
+
         navigation.reset({ index: 0, routes: [{ name: 'Main' }] });
       }
 

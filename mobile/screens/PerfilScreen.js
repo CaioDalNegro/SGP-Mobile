@@ -1,35 +1,38 @@
-import React from "react";
-import {
-  View,
-  Text,
-  StyleSheet,
-  Image,
-  TouchableOpacity,
-  Dimensions,
-} from "react-native";
+import React, { useContext } from "react";
+import { View, Text, StyleSheet, Image, TouchableOpacity, Dimensions } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import Ionicons from "react-native-vector-icons/Ionicons";
+import { UserContext } from "../context/UserContext";
 
 const { width } = Dimensions.get("window");
 
 export default function PerfilScreen({ navigation }) {
-  const user = {
-    name: "Caio Dal Negro",
-    photo: require("../assets/image/profile.png"), // coloque sua imagem aqui
-  };
+  const { userData } = useContext(UserContext);
+
+  if (!userData) return null; // ou um loading, caso o usuário não esteja definido ainda
 
   return (
     <View style={styles.container}>
-      <LinearGradient
-        colors={["#3BA7C9", "#58B4B0"]}
-        style={styles.header}
-      >
+      <LinearGradient colors={["#3BA7C9", "#58B4B0"]} style={styles.header}>
         <View style={styles.curvedShape} />
-        <Image source={user.photo} style={styles.avatar} />
-        <Text style={styles.name}>{user.name}</Text>
+        <Image source={require("../assets/image/profile.png")} style={styles.avatar} />
+        <Text style={styles.name}>{userData.nome}</Text>
+        <Text style={{ color: "#fff", fontSize: 14 }}>{userData.email}</Text>
       </LinearGradient>
 
       <View style={styles.body}>
+        {/* Aqui você pode listar as reservas também */}
+        <Text style={{ fontSize: 18, marginBottom: 10 }}>Minhas Reservas:</Text>
+        {userData.reservas?.length > 0 ? (
+          userData.reservas.map((reserva, index) => (
+            <Text key={index} style={{ marginBottom: 5 }}>
+              • {reserva.quarto} - {reserva.dataCheckin} até {reserva.dataCheckout}
+            </Text>
+          ))
+        ) : (
+          <Text>Nenhuma reserva encontrada.</Text>
+        )}
+
         <TouchableOpacity style={styles.optionButton}>
           <Ionicons name="person-circle-outline" size={22} color="#3BA7C9" />
           <Text style={styles.optionText}>Editar Perfil</Text>
@@ -51,6 +54,7 @@ export default function PerfilScreen({ navigation }) {
     </View>
   );
 }
+
 
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: "#f5fffb" },
