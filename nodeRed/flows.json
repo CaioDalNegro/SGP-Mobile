@@ -16,7 +16,7 @@
         "upload": false,
         "swaggerDoc": "",
         "x": 130,
-        "y": 240,
+        "y": 260,
         "wires": [
             [
                 "152e30f414099565"
@@ -28,7 +28,7 @@
         "type": "function",
         "z": "adf3aa2c4190453d",
         "name": "Buscar Reservas",
-        "func": "msg.payload = global.get(\"reservas\") || [];\nreturn msg;",
+        "func": "let email = msg.req.query.email;\n\nif (!email) {\n    msg.statusCode = 400;\n    msg.payload = { erro: \"Email não fornecido\" };\n    return msg;\n}\n\n// Prepara a consulta SQL\nmsg.topic = `SELECT * FROM reservas WHERE email = '${email}'`;\nreturn msg;\n",
         "outputs": 1,
         "timeout": "",
         "noerr": 0,
@@ -36,10 +36,10 @@
         "finalize": "",
         "libs": [],
         "x": 330,
-        "y": 240,
+        "y": 260,
         "wires": [
             [
-                "0e28dada65f0c86c"
+                "6494a526ad65420a"
             ]
         ]
     },
@@ -50,8 +50,8 @@
         "name": "",
         "statusCode": "",
         "headers": {},
-        "x": 510,
-        "y": 240,
+        "x": 670,
+        "y": 260,
         "wires": []
     },
     {
@@ -64,7 +64,7 @@
         "upload": false,
         "swaggerDoc": "",
         "x": 140,
-        "y": 300,
+        "y": 360,
         "wires": [
             [
                 "dd3410b4101b541d"
@@ -80,7 +80,7 @@
         "action": "obj",
         "pretty": false,
         "x": 330,
-        "y": 300,
+        "y": 360,
         "wires": [
             [
                 "665ad03cc8ba9a9d"
@@ -100,7 +100,7 @@
         "finalize": "",
         "libs": [],
         "x": 440,
-        "y": 420,
+        "y": 440,
         "wires": [
             [
                 "1fb5df3f0aa1295c"
@@ -112,12 +112,12 @@
         "type": "http in",
         "z": "adf3aa2c4190453d",
         "name": "Adicionar_Banco",
-        "url": "http://10.110.12.68:1880",
+        "url": "http://10.110.12.57:1880",
         "method": "post",
         "upload": false,
         "swaggerDoc": "",
         "x": 140,
-        "y": 420,
+        "y": 440,
         "wires": [
             [
                 "14205e4f270c6ec3",
@@ -138,7 +138,7 @@
         "finalize": "",
         "libs": [],
         "x": 440,
-        "y": 500,
+        "y": 520,
         "wires": [
             [
                 "321abb4cd5826f22"
@@ -297,7 +297,7 @@
         "finalize": "",
         "libs": [],
         "x": 520,
-        "y": 300,
+        "y": 360,
         "wires": [
             [
                 "e854b1a00d29ead5"
@@ -317,7 +317,7 @@
         "finalize": "",
         "libs": [],
         "x": 690,
-        "y": 300,
+        "y": 360,
         "wires": [
             [
                 "1fb5df3f0aa1295c"
@@ -337,7 +337,7 @@
         "finalize": "",
         "libs": [],
         "x": 790,
-        "y": 420,
+        "y": 440,
         "wires": [
             [
                 "fe2960f8de2b8fac"
@@ -357,7 +357,7 @@
         "finalize": "",
         "libs": [],
         "x": 970,
-        "y": 420,
+        "y": 440,
         "wires": [
             [
                 "afbb8d75a89ca9e2"
@@ -371,7 +371,7 @@
         "mydb": "2aee678e613109ec",
         "name": "pousada",
         "x": 620,
-        "y": 420,
+        "y": 440,
         "wires": [
             [
                 "374a4dc23ca45904"
@@ -385,7 +385,7 @@
         "mydb": "2aee678e613109ec",
         "name": "pousada",
         "x": 1120,
-        "y": 420,
+        "y": 440,
         "wires": [
             [
                 "369e570963c13fbd"
@@ -439,7 +439,7 @@
         "statusCode": "",
         "headers": {},
         "x": 1260,
-        "y": 420,
+        "y": 440,
         "wires": []
     },
     {
@@ -450,8 +450,22 @@
         "statusCode": "",
         "headers": {},
         "x": 600,
-        "y": 500,
+        "y": 520,
         "wires": []
+    },
+    {
+        "id": "6494a526ad65420a",
+        "type": "mysql",
+        "z": "adf3aa2c4190453d",
+        "mydb": "2aee678e613109ec",
+        "name": "pousada",
+        "x": 520,
+        "y": 260,
+        "wires": [
+            [
+                "0e28dada65f0c86c"
+            ]
+        ]
     },
     {
         "id": "2aee678e613109ec",

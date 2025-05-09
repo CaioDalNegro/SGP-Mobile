@@ -1,15 +1,39 @@
-import React, { useContext } from "react";
-import { View, Text, StyleSheet, Image, TouchableOpacity, Dimensions } from "react-native";
+import React, { useContext, useEffect, useState } from "react";
+import { View, Text, StyleSheet, Image, TouchableOpacity, Dimensions, ActivityIndicator } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import { UserContext } from "../context/UserContext";
+import axios from "axios";
 
 const { width } = Dimensions.get("window");
 
 export default function PerfilScreen({ navigation }) {
   const { userData } = useContext(UserContext);
+  const [reservas, setReservas] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-  if (!userData) return null; // ou um loading, caso o usuário não esteja definido ainda
+  useEffect(() => {
+    if (userData?.email) {
+      axios
+        .get(`http://10.110.12.57:1880/reservas?email=${userData.email}`)
+        .then((res) => {
+          setReservas(res.data || []);
+        })
+        .catch((err) => {
+          console.error("Erro ao buscar reservas:", err);
+          setReservas([]);
+        })
+        .finally(() => setLoading(false));
+    }
+  }, [userData?.email]);
+
+  // Função para formatar data no formato brasileiro (DD/MM/AAAA)
+  const formatarData = (data) => {
+    const options = { year: "numeric", month: "2-digit", day: "2-digit" };
+    return new Date(data).toLocaleDateString("pt-BR", options);
+  };
+
+  if (!userData) return null;
 
   return (
     <View style={styles.container}>
@@ -21,12 +45,13 @@ export default function PerfilScreen({ navigation }) {
       </LinearGradient>
 
       <View style={styles.body}>
-        {/* Aqui você pode listar as reservas também */}
         <Text style={{ fontSize: 18, marginBottom: 10 }}>Minhas Reservas:</Text>
-        {userData.reservas?.length > 0 ? (
-          userData.reservas.map((reserva, index) => (
+        {loading ? (
+          <ActivityIndicator size="small" color="#3BA7C9" />
+        ) : reservas.length > 0 ? (
+          reservas.map((reserva, index) => (
             <Text key={index} style={{ marginBottom: 5 }}>
-              • {reserva.quarto} - {reserva.dataCheckin} até {reserva.dataCheckout}
+              • {reserva.quarto} - {formatarData(reserva.data_checkin)} até {formatarData(reserva.data_checkout)}
             </Text>
           ))
         ) : (
@@ -54,7 +79,6 @@ export default function PerfilScreen({ navigation }) {
     </View>
   );
 }
-
 
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: "#f5fffb" },

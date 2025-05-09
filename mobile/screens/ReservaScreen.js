@@ -10,18 +10,21 @@ export default function TelaReservas() {
   const [quarto, setQuarto] = useState('');
 
   const carregarReservas = async () => {
-    const dados = await buscarReservas();
-    // setReservas(dados); // seu código ainda não tem essa parte visível
+    try {
+      const dados = await buscarReservas();
+      setReservas(dados);
+    } catch (erro) {
+      console.error("Erro ao carregar reservas:", erro);
+    }
   };
 
-  // Função para converter de "DD/MM/AAAA" para "AAAA-MM-DD"
   const converterDataParaFormatoAmericano = (dataBR) => {
     const partes = dataBR.split('/');
     if (partes.length === 3) {
       const [dia, mes, ano] = partes;
       return `${ano}-${mes.padStart(2, '0')}-${dia.padStart(2, '0')}`;
     }
-    return dataBR; // Se o formato for inválido, retorna como está
+    return dataBR;
   };
 
   const salvarReserva = async () => {
@@ -135,5 +138,21 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontSize: 18,
     fontWeight: 'bold'
+  },
+  cardReserva: {
+    backgroundColor: '#fff',
+    padding: 12,
+    marginTop: 10,
+    borderRadius: 8,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.1,
+    shadowRadius: 2,
+    elevation: 2
+  },
+  infoReserva: {
+    fontSize: 14,
+    color: '#444',
+    marginBottom: 2
   }
 });
