@@ -19,7 +19,7 @@
         "y": 260,
         "wires": [
             [
-                "152e30f414099565"
+                "d41376be111a495f"
             ]
         ]
     },
@@ -28,14 +28,14 @@
         "type": "function",
         "z": "adf3aa2c4190453d",
         "name": "Buscar Reservas",
-        "func": "let email = msg.req.query.email;\n\nif (!email) {\n    msg.statusCode = 400;\n    msg.payload = { erro: \"Email não fornecido\" };\n    return msg;\n}\n\n// Prepara a consulta SQL\nmsg.topic = `SELECT * FROM reservas WHERE email = '${email}'`;\nreturn msg;\n",
+        "func": "let email = msg.req.query.email;\n\nif (!email) {\n    msg.statusCode = 400;\n    msg.payload = { erro: \"Email não fornecido\" };\n    return msg;\n}\n\nmsg.topic = `SELECT * FROM reservas WHERE email = '${email}'`;\n\nreturn msg;\n",
         "outputs": 1,
         "timeout": "",
         "noerr": 0,
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 330,
+        "x": 510,
         "y": 260,
         "wires": [
             [
@@ -50,7 +50,7 @@
         "name": "",
         "statusCode": "",
         "headers": {},
-        "x": 670,
+        "x": 890,
         "y": 260,
         "wires": []
     },
@@ -112,7 +112,7 @@
         "type": "http in",
         "z": "adf3aa2c4190453d",
         "name": "Adicionar_Banco",
-        "url": "http://10.110.12.57:1880",
+        "url": "http://10.110.12.69:1880",
         "method": "post",
         "upload": false,
         "swaggerDoc": "",
@@ -138,7 +138,7 @@
         "finalize": "",
         "libs": [],
         "x": 440,
-        "y": 520,
+        "y": 500,
         "wires": [
             [
                 "321abb4cd5826f22"
@@ -336,7 +336,7 @@
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 790,
+        "x": 870,
         "y": 440,
         "wires": [
             [
@@ -356,7 +356,7 @@
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 970,
+        "x": 1050,
         "y": 440,
         "wires": [
             [
@@ -369,8 +369,8 @@
         "type": "mysql",
         "z": "adf3aa2c4190453d",
         "mydb": "2aee678e613109ec",
-        "name": "pousada",
-        "x": 620,
+        "name": "pousada/fazer_reserva",
+        "x": 660,
         "y": 440,
         "wires": [
             [
@@ -383,8 +383,8 @@
         "type": "mysql",
         "z": "adf3aa2c4190453d",
         "mydb": "2aee678e613109ec",
-        "name": "pousada",
-        "x": 1120,
+        "name": "pousada/fazer_reserva",
+        "x": 1240,
         "y": 440,
         "wires": [
             [
@@ -438,8 +438,8 @@
         "name": "retorno",
         "statusCode": "",
         "headers": {},
-        "x": 1260,
-        "y": 440,
+        "x": 1240,
+        "y": 500,
         "wires": []
     },
     {
@@ -450,7 +450,7 @@
         "statusCode": "",
         "headers": {},
         "x": 600,
-        "y": 520,
+        "y": 500,
         "wires": []
     },
     {
@@ -458,12 +458,28 @@
         "type": "mysql",
         "z": "adf3aa2c4190453d",
         "mydb": "2aee678e613109ec",
-        "name": "pousada",
-        "x": 520,
+        "name": "pousada/reservas",
+        "x": 730,
         "y": 260,
         "wires": [
             [
                 "0e28dada65f0c86c"
+            ]
+        ]
+    },
+    {
+        "id": "d41376be111a495f",
+        "type": "json",
+        "z": "adf3aa2c4190453d",
+        "name": "Converter JSON",
+        "property": "payload",
+        "action": "obj",
+        "pretty": false,
+        "x": 320,
+        "y": 260,
+        "wires": [
+            [
+                "152e30f414099565"
             ]
         ]
     },

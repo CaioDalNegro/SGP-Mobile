@@ -12,25 +12,32 @@ export default function PerfilScreen({ navigation }) {
   const [reservas, setReservas] = useState([]);
   const [loading, setLoading] = useState(true);
 
+  const carregarReservas = () => {
+    setLoading(true);
+    axios
+      .get(`http://10.110.12.69:1880/reservas?email=${userData.email}`)
+      .then((res) => {
+        setReservas(res.data || []);
+      })
+      .catch((err) => {
+        console.error("Erro ao buscar reservas:", err);
+        setReservas([]);
+      })
+      .finally(() => setLoading(false));
+  };
+
   useEffect(() => {
     if (userData?.email) {
-      axios
-        .get(`http://10.110.12.57:1880/reservas?email=${userData.email}`)
-        .then((res) => {
-          setReservas(res.data || []);
-        })
-        .catch((err) => {
-          console.error("Erro ao buscar reservas:", err);
-          setReservas([]);
-        })
-        .finally(() => setLoading(false));
+      carregarReservas();
     }
   }, [userData?.email]);
 
-  // Função para formatar data no formato brasileiro (DD/MM/AAAA)
-  const formatarData = (data) => {
-    const options = { year: "numeric", month: "2-digit", day: "2-digit" };
-    return new Date(data).toLocaleDateString("pt-BR", options);
+  const formatarData = (dataISO) => {
+    const data = new Date(dataISO);
+    const dia = String(data.getUTCDate()).padStart(2, '0');
+    const mes = String(data.getUTCMonth() + 1).padStart(2, '0');
+    const ano = data.getUTCFullYear();
+    return `${dia}/${mes}/${ano}`;
   };
 
   if (!userData) return null;
@@ -57,6 +64,11 @@ export default function PerfilScreen({ navigation }) {
         ) : (
           <Text>Nenhuma reserva encontrada.</Text>
         )}
+
+        <TouchableOpacity onPress={carregarReservas} style={styles.refreshButton}>
+          <Ionicons name="refresh-outline" size={20} color="#3BA7C9" />
+          <Text style={styles.optionText}>Atualizar Reservas</Text>
+        </TouchableOpacity>
 
         <TouchableOpacity style={styles.optionButton}>
           <Ionicons name="person-circle-outline" size={22} color="#3BA7C9" />
@@ -123,5 +135,12 @@ const styles = StyleSheet.create({
   logout: {
     marginTop: 20,
     borderBottomWidth: 0,
+  },
+  refreshButton: {
+    flexDirection: "row",
+    alignItems: "center",
+    paddingVertical: 14,
+    borderBottomWidth: 1,
+    borderBottomColor: "#eee",
   },
 });
