@@ -10,6 +10,7 @@ import { adminCredentials } from '../config/admin'; // credenciais fixas
 import { UserContext } from '../context/UserContext'; // Importando o contexto
 
 export default function LoginScreen({ navigation }) {
+  const [mensagemErro, setMensagemErro] = useState('');
   const [email, setEmail] = useState('');
   const [senha, setSenha] = useState('');
   const [passwordVisible, setPasswordVisible] = useState(false);
@@ -38,14 +39,14 @@ export default function LoginScreen({ navigation }) {
     try {
       const { data } = await axios.post('http://10.110.12.57:1880/login', { email, senha });
 
-      if (!data.sucesso) {
-        Alert.alert('Erro de login', data.erro);
-      } else {
-        // Atualizando o contexto com os dados do usuário
-        setUserData(data.usuario); // Supondo que data.usuario seja o objeto do usuário
+          if (!data.sucesso) {
+      setMensagemErro(data.erro); // mostra erro abaixo do botão
+    } else {
+      setMensagemErro('');
+      setUserData(data.usuario);
+      navigation.reset({ index: 0, routes: [{ name: 'Main' }] });
+    }
 
-        navigation.reset({ index: 0, routes: [{ name: 'Main' }] });
-      }
 
     } catch (error) {
       console.error(error);
@@ -108,6 +109,13 @@ export default function LoginScreen({ navigation }) {
             <Text style={styles.loginButtonText}>Entrar</Text>
           )}
         </TouchableOpacity>
+
+              {mensagemErro !== '' && (
+        <Text style={{ color: 'red', marginTop: 15, textAlign: 'center' }}>
+          {mensagemErro}
+        </Text>
+      )}
+
         
       </View>
     </SafeAreaView>
