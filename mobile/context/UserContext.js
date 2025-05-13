@@ -9,7 +9,7 @@ export const UserProvider = ({ children }) => {
   useEffect(() => {
     if (userData?.email) {
       axios
-        .get(`http://10.110.12.18:1880/reservas?email=${userData.email}`)
+        .get(`http://10.110.12.57:1880/reservas?email=${userData.email}`)
         .then((res) => {
           setUserData((prev) => ({
             ...prev,

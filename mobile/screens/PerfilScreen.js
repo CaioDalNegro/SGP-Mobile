@@ -15,7 +15,7 @@ export default function PerfilScreen({ navigation }) {
   const carregarReservas = () => {
     setLoading(true);
     axios
-      .get(`http://10.110.12.18:1880/reservas?email=${userData.email}`)
+      .get(`http://10.110.12.57:1880/reservas?email=${userData.email}`)
       .then((res) => {
         setReservas(res.data || []);
       })

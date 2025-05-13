@@ -11,6 +11,9 @@ import DescriptionScreen from './screens/DescriptionScreen';
 import { FavoritesProvider } from './context/FavoritesContext'; 
 import { UserProvider } from './context/UserContext';
 
+// 👇 Importa o Toast
+import Toast from 'react-native-toast-message';
+
 const Stack = createStackNavigator();
 
 export default function App() {
@@ -26,6 +29,9 @@ export default function App() {
             <Stack.Screen name="Description" component={DescriptionScreen} />
           </Stack.Navigator>
         </NavigationContainer>
+
+        {/* 👇 Toast deve estar aqui, fora do NavigationContainer */}
+        <Toast />
       </FavoritesProvider>
     </UserProvider>
   );
