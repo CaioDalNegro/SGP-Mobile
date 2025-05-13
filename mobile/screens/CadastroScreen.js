@@ -26,7 +26,7 @@ export default function CadastroScreen({ navigation }) {
       senha,
     };
 
-    fetch('http://10.110.12.69:1880/cadastro', {
+    fetch('http://10.110.12.18:1880/cadastro', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
