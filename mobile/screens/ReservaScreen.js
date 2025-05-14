@@ -1,11 +1,10 @@
 import React, { useEffect, useState, useContext } from 'react';
-import { View, Text, TouchableOpacity, TextInput, StyleSheet, Platform } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet, Platform } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { criarReserva, buscarReservas } from '../components/api';
 import { UserContext } from "../context/UserContext";
 import Toast from 'react-native-toast-message';
-
 
 export default function TelaReservas() {
   const [dataCheckin, setDataCheckin] = useState(new Date());
@@ -15,6 +14,10 @@ export default function TelaReservas() {
 
   const [showCheckinPicker, setShowCheckinPicker] = useState(false);
   const [showCheckoutPicker, setShowCheckoutPicker] = useState(false);
+  const [todasReservas, setTodasReservas] = useState([]);
+
+  const hoje = new Date();
+  hoje.setHours(0, 0, 0, 0);
 
   const formatarData = (data) => {
     const dia = data.getDate().toString().padStart(2, '0');
@@ -30,43 +33,10 @@ export default function TelaReservas() {
     return `${ano}-${mes}-${dia}`;
   };
 
-  const salvarReserva = async () => {
-    try {
-      await criarReserva({
-        nome: userData?.nome || '',
-        email: userData?.email || '',
-        data_checkin: converterParaAmericano(dataCheckin),
-        data_checkout: converterParaAmericano(dataCheckout),
-        quarto: quarto
-      });
-  
-      Toast.show({
-        type: 'success',
-        text1: 'Reserva criada com sucesso!',
-        text2: `Sua reserva no quarto ${quarto} foi registrada.`,
-        position: 'bottom'
-      });
-  
-      setDataCheckin(new Date());
-      setDataCheckout(new Date());
-      setQuarto('');
-      carregarReservas();
-    } catch (erro) {
-      Toast.show({
-        type: 'error',
-        text1: 'Erro ao criar reserva',
-        text2: 'Tente novamente mais tarde.',
-        position: 'bottom'
-      });
-      console.error('Erro ao salvar reserva:', erro);
-    }
-  };
-  
-
   const carregarReservas = async () => {
     try {
       const dados = await buscarReservas();
-      // setReservas(dados); // Remover ou implementar conforme necessário
+      setTodasReservas(dados || []);
     } catch (erro) {
       console.error("Erro ao carregar reservas:", erro);
     }
@@ -76,46 +46,105 @@ export default function TelaReservas() {
     carregarReservas();
   }, []);
 
+  const verificarConflitoDeReserva = () => {
+    const novaEntrada = new Date(dataCheckin);
+    const novaSaida = new Date(dataCheckout);
+
+    return todasReservas.some((reserva) => {
+      if (reserva.quarto !== quarto) return false;
+
+      const checkinExistente = new Date(reserva.data_checkin);
+      const checkoutExistente = new Date(reserva.data_checkout);
+
+      return (
+        (novaEntrada >= checkinExistente && novaEntrada < checkoutExistente) ||
+        (novaSaida > checkinExistente && novaSaida <= checkoutExistente) ||
+        (novaEntrada <= checkinExistente && novaSaida >= checkoutExistente)
+      );
+    });
+  };
+
+  const salvarReserva = async () => {
+    if (!quarto) {
+      Toast.show({ type: 'error', text1: 'Selecione um quarto', position: 'bottom' });
+      return;
+    }
+
+    if (dataCheckin < hoje) {
+      Toast.show({ type: 'error', text1: 'Data inválida', text2: 'Check-in no passado.', position: 'bottom' });
+      return;
+    }
+
+    if (dataCheckout <= dataCheckin) {
+      Toast.show({ type: 'error', text1: 'Datas inválidas', text2: 'Check-out após check-in.', position: 'bottom' });
+      return;
+    }
+
+    if (verificarConflitoDeReserva()) {
+      Toast.show({ type: 'error', text1: 'Conflito de reserva', text2: 'Já existe uma reserva nesse período.', position: 'bottom' });
+      return;
+    }
+
+    try {
+      await criarReserva({
+        nome: userData?.nome || '',
+        email: userData?.email || '',
+        data_checkin: converterParaAmericano(dataCheckin),
+        data_checkout: converterParaAmericano(dataCheckout),
+        quarto: quarto
+      });
+
+      Toast.show({ type: 'success', text1: 'Reserva criada com sucesso!', position: 'bottom' });
+
+      setDataCheckin(new Date());
+      setDataCheckout(new Date());
+      setQuarto('');
+      carregarReservas();
+    } catch (erro) {
+      Toast.show({ type: 'error', text1: 'Erro ao criar reserva', text2: 'Tente novamente.', position: 'bottom' });
+      console.error('Erro ao salvar reserva:', erro);
+    }
+  };
+
   return (
     <View style={styles.container}>
       <Text style={styles.titulo}>Nova Reserva</Text>
 
-      {/* CHECK-IN */}
+      {/* Check-in */}
       <TouchableOpacity style={styles.input} onPress={() => setShowCheckinPicker(true)}>
-        <Text style={{ color: dataCheckin ? '#000' : '#999' }}>
-          {formatarData(dataCheckin)}
-        </Text>
+        <Text style={{ color: '#000' }}>{formatarData(dataCheckin)}</Text>
       </TouchableOpacity>
       {showCheckinPicker && (
         <DateTimePicker
           value={dataCheckin}
           mode="date"
+          minimumDate={hoje}
           display={Platform.OS === 'ios' ? 'spinner' : 'default'}
           onChange={(event, selectedDate) => {
             setShowCheckinPicker(false);
-            if (selectedDate) setDataCheckin(selectedDate);
+            if (selectedDate && selectedDate >= hoje) setDataCheckin(selectedDate);
           }}
         />
       )}
 
-      {/* CHECK-OUT */}
+      {/* Check-out */}
       <TouchableOpacity style={styles.input} onPress={() => setShowCheckoutPicker(true)}>
-        <Text style={{ color: dataCheckout ? '#000' : '#999' }}>
-          {formatarData(dataCheckout)}
-        </Text>
+        <Text style={{ color: '#000' }}>{formatarData(dataCheckout)}</Text>
       </TouchableOpacity>
       {showCheckoutPicker && (
         <DateTimePicker
           value={dataCheckout}
           mode="date"
+          minimumDate={dataCheckin}
           display={Platform.OS === 'ios' ? 'spinner' : 'default'}
           onChange={(event, selectedDate) => {
             setShowCheckoutPicker(false);
-            if (selectedDate) setDataCheckout(selectedDate);
+            if (selectedDate && selectedDate > dataCheckin) setDataCheckout(selectedDate);
           }}
         />
       )}
 
+      {/* Quarto */}
       <View style={styles.pickerContainer}>
         <Text style={styles.label}>Tipo de Quarto:</Text>
         <View style={styles.pickerWrapper}>
@@ -123,7 +152,6 @@ export default function TelaReservas() {
             selectedValue={quarto}
             onValueChange={(itemValue) => setQuarto(itemValue)}
             style={styles.picker}
-            dropdownIconColor="#4CAF50"
           >
             <Picker.Item label="Selecione o quarto" value="" />
             <Picker.Item label="Domo" value="Domo" />
@@ -141,7 +169,6 @@ export default function TelaReservas() {
     </View>
   );
 }
-
 
 const styles = StyleSheet.create({
   container: {
