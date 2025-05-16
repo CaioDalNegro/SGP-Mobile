@@ -46,24 +46,6 @@ export default function TelaReservas() {
     carregarReservas();
   }, []);
 
-  const verificarConflitoDeReserva = () => {
-    const novaEntrada = new Date(dataCheckin);
-    const novaSaida = new Date(dataCheckout);
-
-    return todasReservas.some((reserva) => {
-      if (reserva.quarto !== quarto) return false;
-
-      const checkinExistente = new Date(reserva.data_checkin);
-      const checkoutExistente = new Date(reserva.data_checkout);
-
-      return (
-        (novaEntrada >= checkinExistente && novaEntrada < checkoutExistente) ||
-        (novaSaida > checkinExistente && novaSaida <= checkoutExistente) ||
-        (novaEntrada <= checkinExistente && novaSaida >= checkoutExistente)
-      );
-    });
-  };
-
   const salvarReserva = async () => {
     if (!quarto) {
       Toast.show({ type: 'error', text1: 'Selecione um quarto', position: 'bottom' });
@@ -80,8 +62,9 @@ export default function TelaReservas() {
       return;
     }
 
-    if (verificarConflitoDeReserva()) {
-      Toast.show({ type: 'error', text1: 'Conflito de reserva', text2: 'Já existe uma reserva nesse período.', position: 'bottom' });
+    const diffEmDias = (dataCheckout - dataCheckin) / (1000 * 60 * 60 * 24);
+    if (diffEmDias < 2) {
+      Toast.show({ type: 'error', text1: 'Duração mínima', text2: 'A reserva deve ter pelo menos 2 dias.', position: 'bottom' });
       return;
     }
 

@@ -7,7 +7,7 @@ import LoginScreen from './screens/LoginScreen';
 import CadastroScreen from './screens/CadastroScreen';
 import MainTabs from './navigation/MainTabs';
 import DescriptionScreen from './screens/DescriptionScreen';
-import MercadinhoScreen from './screens/MercadinhoScreen';  
+//import MercadinhoScreen from './screens/MercadinhoScreen';  
 
 
 import { FavoritesProvider } from './context/FavoritesContext'; 
@@ -29,7 +29,7 @@ export default function App() {
             <Stack.Screen name="Login" component={LoginScreen} />
             <Stack.Screen name="Main" component={MainTabs} />
             <Stack.Screen name="Description" component={DescriptionScreen} />
-            <Stack.Screen name="Mercadinho" component={MercadinhoScreen} /> {/* Adiciona Mercadinho aqui */}
+           {/* <Stack.Screen name="Mercadinho" component={MercadinhoScreen} />  Adiciona Mercadinho aqui */}
           </Stack.Navigator>
         </NavigationContainer>
 
