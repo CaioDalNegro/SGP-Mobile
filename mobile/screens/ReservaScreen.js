@@ -6,7 +6,7 @@ import { criarReserva, buscarReservas } from '../components/api';
 import { UserContext } from "../context/UserContext";
 import Toast from 'react-native-toast-message';
 
-export default function TelaReservas() {
+export default function TelaReservas( {navigation} ) {
   const [dataCheckin, setDataCheckin] = useState(new Date());
   const [dataCheckout, setDataCheckout] = useState(new Date());
   const [quarto, setQuarto] = useState('');
@@ -14,7 +14,6 @@ export default function TelaReservas() {
 
   const [showCheckinPicker, setShowCheckinPicker] = useState(false);
   const [showCheckoutPicker, setShowCheckoutPicker] = useState(false);
-  const [todasReservas, setTodasReservas] = useState([]);
 
   const hoje = new Date();
   hoje.setHours(0, 0, 0, 0);
@@ -77,7 +76,7 @@ export default function TelaReservas() {
         quarto: quarto
       });
 
-      Toast.show({ type: 'success', text1: 'Reserva criada com sucesso!', position: 'bottom' });
+      //Toast.show({ type: 'success', text1: 'Reserva criada com sucesso!', position: 'bottom' });
 
       setDataCheckin(new Date());
       setDataCheckout(new Date());
@@ -87,6 +86,11 @@ export default function TelaReservas() {
       Toast.show({ type: 'error', text1: 'Erro ao criar reserva', text2: 'Tente novamente.', position: 'bottom' });
       console.error('Erro ao salvar reserva:', erro);
     }
+
+    // Redirecionar para a tela Home com a mensagem
+      navigation.navigate('Início', {
+        mensagem: 'Nova mensagem!',
+      });
   };
 
   return (

@@ -23,6 +23,7 @@ export default function DescriptionScreen({ route, navigation }) {
         <Ionicons name="arrow-back" size={24} color="#333" />
       </TouchableOpacity>
 
+      {/* Imagem e informações */}
       <Image source={place.image} style={styles.image} />
       <Text style={styles.title}>{place.name}</Text>
       <Text style={styles.location}>{place.location}</Text>
@@ -30,6 +31,18 @@ export default function DescriptionScreen({ route, navigation }) {
         Aqui vai uma descrição completa da pousada "{place.name}". Você pode incluir
         comodidades, localização, avaliações, etc.
       </Text>
+
+      {/* Botão de Reservar */}
+      <TouchableOpacity
+        style={styles.reserveButton}
+        onPress={() => navigation.navigate("Main", {
+            screen: "Reservas",
+            params: { place },
+          })
+        }
+      >
+        <Text style={styles.reserveButtonText}>Reservar</Text>
+      </TouchableOpacity>
     </ScrollView>
   );
 }
@@ -54,7 +67,7 @@ const styles = StyleSheet.create({
     width: "100%",
     height: 200,
     borderRadius: 12,
-    marginBottom: 16, 
+    marginBottom: 16,
     marginTop: 40, // Deixa espaço para o botão
   },
   title: {
@@ -70,6 +83,17 @@ const styles = StyleSheet.create({
   description: {
     fontSize: 16,
     textAlign: "justify",
+    marginBottom: 24,
+  },
+  reserveButton: {
+    backgroundColor: "#4CAF50",
+    paddingVertical: 12,
+    paddingHorizontal: 32,
+    borderRadius: 8,
+  },
+  reserveButtonText: {
+    color: "white",
+    fontSize: 16,
+    fontWeight: "bold",
   },
 });
-  

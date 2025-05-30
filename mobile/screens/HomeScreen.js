@@ -35,11 +35,18 @@ const places = [
   },
 ];
 
-export default function HomeScreen({ navigation }) {
+export default function HomeScreen({ navigation, route }) {
   const [footerVisible, setFooterVisible] = useState(false);
   const [searchText, setSearchText] = useState("");
   const [filteredPlaces, setFilteredPlaces] = useState(places);
+  const [mensagem, setMensagem] = useState(null);
   const { favorites, addFavorite, removeFavorite, isFavorite } = useFavorites();
+
+    React.useEffect(() => {
+    if (route.params?.mensagem) {
+      setMensagem(route.params.mensagem);
+    }
+  }, [route.params?.mensagem]);
 
   const handleScroll = (e) => {
     const { contentSize, contentOffset, layoutMeasurement } = e.nativeEvent;
@@ -74,9 +81,35 @@ export default function HomeScreen({ navigation }) {
             Seu refúgio perfeito a{" "}
             <Text style={styles.boldText}>um clique</Text> de distância!
           </Text>
-          <TouchableOpacity>
+          <View>
+            <TouchableOpacity
+            onPress={() => {
+              if (mensagem) {
+                navigation.navigate("Notificação", { mensagem });
+              }
+            }}
+          >
             <Ionicons name="notifications-outline" size={24} color="white" />
           </TouchableOpacity>
+
+
+            {mensagem && (
+              <View
+                style={{
+                  position: "absolute",
+                  top: -5,
+                  right: -5,
+                  backgroundColor: "red",
+                  borderRadius: 10,
+                  paddingHorizontal: 6,
+                  paddingVertical: 2,
+                }}
+              >
+                <Text style={{ color: "white", fontSize: 10 }}>1</Text>
+            </View>
+  )}
+</View>
+
         </View>
 
         {/* Search Bar */}
@@ -154,6 +187,20 @@ export default function HomeScreen({ navigation }) {
           );
         }}
       />
+
+      {mensagem && (
+      <View
+        style={{
+          backgroundColor: "#4CAF50",
+          padding: 10,
+          margin: 10,
+          borderRadius: 5,
+        }}
+      >
+        <Text style={{ color: "white", textAlign: "center" }}>{mensagem}</Text>
+      </View>
+    )}
     </SafeAreaView>
+
   );
 }

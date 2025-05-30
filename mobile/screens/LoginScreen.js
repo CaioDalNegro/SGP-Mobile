@@ -37,7 +37,7 @@ export default function LoginScreen({ navigation }) {
 
     // Caso contrário, tenta validar no banco
     try {
-      const { data } = await axios.post('http://10.110.12.57:1880/login', { email, senha });
+      const { data } = await axios.post('http://10.110.12.42:1880/login', { email, senha });
 
           if (!data.sucesso) {
       setMensagemErro(data.erro); // mostra erro abaixo do botão

@@ -1,5 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import { View, Text, StyleSheet, Image, TouchableOpacity, Dimensions, ActivityIndicator } from "react-native";
+import { ScrollView } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import { UserContext } from "../context/UserContext";
@@ -15,7 +16,7 @@ export default function PerfilScreen({ navigation }) {
   const carregarReservas = () => {
     setLoading(true);
     axios
-      .get(`http://10.110.12.57:1880/reservas?email=${userData.email}`)
+      .get(`http://10.110.12.42:1880/reservas?email=${userData.email}`)
       .then((res) => {
         setReservas(res.data || []);
       })
@@ -51,15 +52,18 @@ export default function PerfilScreen({ navigation }) {
         <Text style={{ color: "#fff", fontSize: 14 }}>{userData.email}</Text>
       </LinearGradient>
 
-      <View style={styles.body}>
+      <ScrollView contentContainerStyle={styles.body} showsVerticalScrollIndicator={false}>
         <Text style={{ fontSize: 18, marginBottom: 10 }}>Minhas Reservas:</Text>
         {loading ? (
           <ActivityIndicator size="small" color="#3BA7C9" />
         ) : reservas.length > 0 ? (
           reservas.map((reserva, index) => (
-            <Text key={index} style={{ marginBottom: 5 }}>
-              • {reserva.quarto} - {formatarData(reserva.data_checkin)} até {formatarData(reserva.data_checkout)}
-            </Text>
+            <View key={index} style={styles.cardReserva}>
+              <Text style={styles.cardTitulo}>{reserva.quarto}</Text>
+              <Text style={styles.cardData}>
+                {formatarData(reserva.data_checkin)} até {formatarData(reserva.data_checkout)}
+              </Text>
+            </View>
           ))
         ) : (
           <Text>Nenhuma reserva encontrada.</Text>
@@ -70,15 +74,22 @@ export default function PerfilScreen({ navigation }) {
           <Text style={styles.optionText}>Atualizar Reservas</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity style={styles.optionButton}>
+        <TouchableOpacity
+          style={styles.optionButton}
+          onPress={() => navigation.navigate("Edit")}
+        >
           <Ionicons name="person-circle-outline" size={22} color="#3BA7C9" />
           <Text style={styles.optionText}>Editar Perfil</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity style={styles.optionButton}>
+        <TouchableOpacity
+          style={styles.optionButton}
+          onPress={() => navigation.navigate("Config")}
+        >
           <Ionicons name="settings-outline" size={22} color="#3BA7C9" />
           <Text style={styles.optionText}>Configurações</Text>
         </TouchableOpacity>
+
 
         <TouchableOpacity
           style={[styles.optionButton, styles.logout]}
@@ -87,7 +98,7 @@ export default function PerfilScreen({ navigation }) {
           <Ionicons name="log-out-outline" size={22} color="#e74c3c" />
           <Text style={[styles.optionText, { color: "#e74c3c" }]}>Sair</Text>
         </TouchableOpacity>
-      </View>
+      </ScrollView>
     </View>
   );
 }
@@ -119,6 +130,7 @@ const styles = StyleSheet.create({
   body: {
     marginTop: 50,
     paddingHorizontal: 30,
+    paddingBottom: 100,
   },
   optionButton: {
     flexDirection: "row",
@@ -143,4 +155,28 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderBottomColor: "#eee",
   },
+    cardReserva: {
+    backgroundColor: "#ffffff",
+    padding: 15,
+    marginBottom: 12,
+    borderRadius: 12,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 3,
+    borderLeftWidth: 5,
+    borderLeftColor: "#3BA7C9",
+  },
+  cardTitulo: {
+    fontSize: 16,
+    fontWeight: "bold",
+    color: "#333",
+    marginBottom: 5,
+  },
+  cardData: {
+    fontSize: 14,
+    color: "#666",
+  },
+
 });
