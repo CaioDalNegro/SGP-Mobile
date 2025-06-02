@@ -10,6 +10,7 @@ import DescriptionScreen from './screens/DescriptionScreen';
 import NotificacaoScreen from './screens/NotificacaoScreen';
 
 
+
 import { FavoritesProvider } from './context/FavoritesContext'; 
 import { UserProvider } from './context/UserContext';
 
@@ -30,6 +31,9 @@ export default function App() {
             <Stack.Screen name="Main" component={MainTabs} />
             <Stack.Screen name="Description" component={DescriptionScreen} />
             <Stack.Screen name="Notificação" component={NotificacaoScreen} />
+
+
+            <Stack.Screen name="Mercadinho" component={MercadinhoScreen} />
           </Stack.Navigator>
         </NavigationContainer>
 

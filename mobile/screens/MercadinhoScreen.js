@@ -1,24 +1,27 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import {
+  SafeAreaView,
   View,
   Alert,
   StyleSheet,
   Text,
   ScrollView,
   TextInput,
-  Modal,
   TouchableOpacity,
   Image,
+  KeyboardAvoidingView,
+  Platform,
 } from 'react-native';
+import { useNavigation, useFocusEffect } from '@react-navigation/native';
 
 const ESP32_IP = 'http://10.110.12.93';
 
 const produtos = [
-  { nome: 'Água Mineral', rota: 'agua', preco: 2.50, imagem: require('../assets/image/produtos/agua.png') },
-  { nome: 'Refrigerante', rota: 'refrigerante', preco: 5.00, imagem: require('../assets/image/produtos/refrigerante.png') },
-  { nome: 'Chocolate', rota: 'chocolate', preco: 3.00, imagem: require('../assets/image/produtos/chocolate.png') },
-  { nome: 'Biscoito', rota: 'biscoito', preco: 2.00, imagem: require('../assets/image/produtos/biscoito.png') },
-  { nome: 'Pipoca', rota: 'pipoca', preco: 4.00, imagem: require('../assets/image/produtos/pipoca.png') },
+  { nome: 'Água Mineral', rota: 'agua', preco: 2.5, imagem: require('../assets/image/produtos/agua.png') },
+  { nome: 'Refrigerante', rota: 'refrigerante', preco: 5.0, imagem: require('../assets/image/produtos/refrigerante.png') },
+  { nome: 'Chocolate', rota: 'chocolate', preco: 3.0, imagem: require('../assets/image/produtos/chocolate.png') },
+  { nome: 'Biscoito', rota: 'biscoito', preco: 2.0, imagem: require('../assets/image/produtos/biscoito.png') },
+  { nome: 'Pipoca', rota: 'pipoca', preco: 4.0, imagem: require('../assets/image/produtos/pipoca.png') },
 ];
 
 const SENHA_CORRETA = '1234';
@@ -26,9 +29,18 @@ const SENHA_CORRETA = '1234';
 export default function Mercadinho() {
   const [acessoLiberado, setAcessoLiberado] = useState(false);
   const [senha, setSenha] = useState('');
-  const [modalVisible, setModalVisible] = useState(true);
   const [carrinho, setCarrinho] = useState([]);
   const [quantidades, setQuantidades] = useState({});
+  const navigation = useNavigation();
+
+  useFocusEffect(
+    useCallback(() => {
+      setAcessoLiberado(false);
+      setSenha('');
+      setCarrinho([]);
+      setQuantidades({});
+    }, [])
+  );
 
   const enviarComando = async (rota, mensagemSucesso) => {
     try {
@@ -42,7 +54,6 @@ export default function Mercadinho() {
 
   const validarSenha = async () => {
     if (senha === SENHA_CORRETA) {
-      setModalVisible(false);
       setAcessoLiberado(true);
       await enviarComando('abrir', 'Mercado aberto!');
       setSenha('');
@@ -52,12 +63,15 @@ export default function Mercadinho() {
     }
   };
 
+  const cancelarSenha = () => {
+    navigation.goBack();
+  };
+
   const sairDoMercado = async () => {
     await enviarComando('fechar', 'Mercado fechado.');
     setAcessoLiberado(false);
     setCarrinho([]);
     setQuantidades({});
-    setModalVisible(true);
   };
 
   const adicionarAoCarrinho = (produto) => {
@@ -121,9 +135,12 @@ export default function Mercadinho() {
   };
 
   return (
-    <View style={{ flex: 1 }}>
-      <Modal visible={modalVisible} animationType="slide" transparent={true}>
-        <View style={styles.modalContainer}>
+    <SafeAreaView style={{ flex: 1 }}>
+      {!acessoLiberado && (
+        <KeyboardAvoidingView
+          behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+          style={styles.overlayContainer}
+        >
           <View style={styles.modalContent}>
             <Text style={styles.titulo}>🔐 Digite a senha</Text>
             <TextInput
@@ -133,16 +150,26 @@ export default function Mercadinho() {
               value={senha}
               onChangeText={setSenha}
               keyboardType="numeric"
+              returnKeyType="done"
+              onSubmitEditing={validarSenha}
+              autoFocus
             />
-            <TouchableOpacity style={styles.botao} onPress={validarSenha}>
-              <Text style={styles.botaoTexto}>Entrar</Text>
-            </TouchableOpacity>
+
+            <View style={styles.botaoLinha}>
+              <TouchableOpacity style={[styles.botao, { flex: 1, marginRight: 10 }]} onPress={validarSenha}>
+                <Text style={styles.botaoTexto}>Entrar</Text>
+              </TouchableOpacity>
+
+              <TouchableOpacity style={[styles.botaoCancelar, { flex: 1 }]} onPress={cancelarSenha}>
+                <Text style={styles.botaoCancelarTexto}>Cancelar</Text>
+              </TouchableOpacity>
+            </View>
           </View>
-        </View>
-      </Modal>
+        </KeyboardAvoidingView>
+      )}
 
       {acessoLiberado && (
-        <ScrollView contentContainerStyle={styles.container}>
+        <ScrollView contentContainerStyle={styles.container} keyboardShouldPersistTaps="handled">
           <Text style={styles.titulo}>🛒 Mercadinho 24H</Text>
 
           <TouchableOpacity style={[styles.botao, styles.botaoSair]} onPress={sairDoMercado}>
@@ -193,7 +220,7 @@ export default function Mercadinho() {
           </TouchableOpacity>
         </ScrollView>
       )}
-    </View>
+    </SafeAreaView>
   );
 }
 
@@ -243,77 +270,97 @@ const styles = StyleSheet.create({
   linhaProduto: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 10, // No Android, gap não funciona, pode substituir por marginRight no input
   },
   inputQtd: {
     borderWidth: 1,
     borderColor: '#ccc',
     padding: 8,
-    width: 80,
+    width: 70,
     borderRadius: 8,
-    marginRight: 10,
+    marginRight: 12,
+    fontSize: 16,
     textAlign: 'center',
   },
   botaoPequeno: {
-    backgroundColor: '#00a8ff',
-    paddingVertical: 8,
-    paddingHorizontal: 12,
-    borderRadius: 8,
-  },
-  botao: {
-    backgroundColor: '#273c75',
-    padding: 12,
-    borderRadius: 10,
-    marginTop: 10,
-    alignItems: 'center',
-  },
-  botaoFinalizar: {
     backgroundColor: '#44bd32',
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    borderRadius: 10,
+  },
+  botaoTexto: {
+    color: 'white',
+    fontWeight: 'bold',
+    fontSize: 16,
+    textAlign: 'center',
   },
   botaoSair: {
     backgroundColor: '#e84118',
+    marginBottom: 25,
   },
-  botaoTexto: {
-    color: '#fff',
-    fontWeight: 'bold',
+  botaoFinalizar: {
+    backgroundColor: '#273c75',
+    marginTop: 20,
+    marginBottom: 40,
   },
   carrinhoItem: {
     fontSize: 16,
-    marginBottom: 5,
-  },
-  vazio: {
-    fontStyle: 'italic',
-    color: '#888',
+    marginVertical: 4,
+    color: '#192a56',
   },
   total: {
-    fontSize: 20,
+    fontSize: 18,
     fontWeight: 'bold',
-    marginVertical: 15,
-    textAlign: 'center',
+    marginTop: 10,
+    textAlign: 'right',
     color: '#2d3436',
   },
-  modalContainer: {
+  vazio: {
+    fontSize: 16,
+    fontStyle: 'italic',
+    color: '#7f8fa6',
+  },
+  overlayContainer: {
     flex: 1,
+    backgroundColor: 'rgba(0,0,0,0.6)',
     justifyContent: 'center',
-    backgroundColor: 'rgba(0,0,0,0.5)',
-    alignItems: 'center',
+    padding: 30,
   },
   modalContent: {
     backgroundColor: 'white',
-    padding: 30,
     borderRadius: 15,
+    padding: 25,
     alignItems: 'center',
-    width: '85%',
-    elevation: 10,
   },
   inputSenha: {
     borderWidth: 1,
     borderColor: '#ccc',
-    padding: 12,
-    width: '100%',
-    marginBottom: 20,
-    fontSize: 18,
     borderRadius: 10,
+    width: '80%',
+    padding: 12,
+    marginTop: 20,
+    fontSize: 18,
+    textAlign: 'center',
+  },
+  botaoLinha: {
+    flexDirection: 'row',
+    marginTop: 25,
+    width: '80%',
+    justifyContent: 'center',
+  },
+  botao: {
+    backgroundColor: '#44bd32',
+    paddingVertical: 12,
+    borderRadius: 10,
+  },
+  botaoCancelar: {
+    backgroundColor: '#e84118',
+    paddingVertical: 12,
+    borderRadius: 10,
+  },
+  botaoCancelarTexto: {
+    color: 'white',
+    fontWeight: 'bold',
+    fontSize: 16,
     textAlign: 'center',
   },
 });
