@@ -7,10 +7,7 @@ import LoginScreen from './screens/LoginScreen';
 import CadastroScreen from './screens/CadastroScreen';
 import MainTabs from './navigation/MainTabs';
 import DescriptionScreen from './screens/DescriptionScreen';
-import EditarPerfilScreen from './screens/EditarPerfilScreen';
-import ConfiguracaoScreen from './screens/ConfiguracaoScreen';
 import NotificacaoScreen from './screens/NotificacaoScreen';
-//import MercadinhoScreen from './screens/MercadinhoScreen';  
 
 
 import { FavoritesProvider } from './context/FavoritesContext'; 
@@ -32,10 +29,7 @@ export default function App() {
             <Stack.Screen name="Login" component={LoginScreen} />
             <Stack.Screen name="Main" component={MainTabs} />
             <Stack.Screen name="Description" component={DescriptionScreen} />
-            <Stack.Screen name="Config" component={ConfiguracaoScreen} />
-            <Stack.Screen name="Edit" component={EditarPerfilScreen} />
             <Stack.Screen name="Notificação" component={NotificacaoScreen} />
-           {/* <Stack.Screen name="Mercadinho" component={MercadinhoScreen} />  Adiciona Mercadinho aqui */}
           </Stack.Navigator>
         </NavigationContainer>
 

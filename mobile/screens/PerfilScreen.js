@@ -16,7 +16,7 @@ export default function PerfilScreen({ navigation }) {
   const carregarReservas = () => {
     setLoading(true);
     axios
-      .get(`http://10.110.12.42:1880/reservas?email=${userData.email}`)
+      .get(`http://10.110.12.61:1880/reservas?email=${userData.email}`)
       .then((res) => {
         setReservas(res.data || []);
       })
@@ -73,23 +73,6 @@ export default function PerfilScreen({ navigation }) {
           <Ionicons name="refresh-outline" size={20} color="#3BA7C9" />
           <Text style={styles.optionText}>Atualizar Reservas</Text>
         </TouchableOpacity>
-
-        <TouchableOpacity
-          style={styles.optionButton}
-          onPress={() => navigation.navigate("Edit")}
-        >
-          <Ionicons name="person-circle-outline" size={22} color="#3BA7C9" />
-          <Text style={styles.optionText}>Editar Perfil</Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity
-          style={styles.optionButton}
-          onPress={() => navigation.navigate("Config")}
-        >
-          <Ionicons name="settings-outline" size={22} color="#3BA7C9" />
-          <Text style={styles.optionText}>Configurações</Text>
-        </TouchableOpacity>
-
 
         <TouchableOpacity
           style={[styles.optionButton, styles.logout]}

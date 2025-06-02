@@ -11,7 +11,7 @@ import {
   Image,
 } from 'react-native';
 
-const ESP32_IP = 'http://10.110.12.100';
+const ESP32_IP = 'http://10.110.12.93';
 
 const produtos = [
   { nome: 'Água Mineral', rota: 'agua', preco: 2.50, imagem: require('../assets/image/produtos/agua.png') },
