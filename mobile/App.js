@@ -8,6 +8,7 @@ import CadastroScreen from './screens/CadastroScreen';
 import MainTabs from './navigation/MainTabs';
 import DescriptionScreen from './screens/DescriptionScreen';
 import NotificacaoScreen from './screens/NotificacaoScreen';
+import MercadinhoScreen from './screens/MercadinhoScreen';
 
 
 
